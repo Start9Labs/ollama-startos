@@ -8,26 +8,25 @@ const architectures =
 
 export const manifest = setupManifest({
   id: 'ollama',
-  title: 'Ollama & Open WebUI',
+  title: 'Ollama',
   license: 'MIT',
-  wrapperRepo: 'https://github.com/Start9Labs/freegpt2-startos',
-  upstreamRepo: 'https://github.com/Start9Labs/freegpt2-startos',
-  supportSite: 'https://github.com/Start9Labs/freegpt2-startos/issues',
-  marketingSite: 'https://start9.com/',
+  wrapperRepo: 'https://github.com/Start9Labs/ollama-startos',
+  upstreamRepo: 'https://github.com/ollama/ollama',
+  supportSite: 'https://docs.ollama.com/',
+  marketingSite: 'https://ollama.com/',
   donationUrl: null,
-  docsUrl: 'https://github.com/Start9Labs/freegpt2-startos/blob/update/040/docs/README.md',
+  docsUrl: 'https://docs.ollama.com/',
   description: {
-    short: 'Person, private AI.',
-    long: 'This service combines Ollama for running large language models (LLMs) on your server, and Open WebUI for interacting with them remotely through any browser. This combination provides a clean and intuitive experience for working with locally hosted language models in a sovereign fashion.',
+    short: 'Chat & build with open models',
+    long: 'Get up and running with self-hosted, open source large language models (LLMs)',
   },
-  // @TODO do we need this cert volume?
-  volumes: ['main', 'ollama', 'cert'],
+  volumes: ['main'],
   images: {
     ollama: {
       source: {
-        dockerBuild: {},
+        dockerTag: 'ollama/ollama:0.13.1',
       },
-      arch: architectures
+      arch: architectures,
     } as SDKImageInputSpec,
   },
   // @TODO

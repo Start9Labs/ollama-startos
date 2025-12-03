@@ -1,16 +1,16 @@
 import { sdk } from './sdk'
-import { uiPort } from './utils'
+import { port } from './utils'
 
 export const setInterfaces = sdk.setupInterfaces(async ({ effects }) => {
-  const uiMulti = sdk.MultiHost.of(effects, 'ui-multi')
-  const uiMultiOrigin = await uiMulti.bindPort(uiPort, {
+  const apiMulti = sdk.MultiHost.of(effects, 'api-multi')
+  const apiMultiOrigin = await apiMulti.bindPort(port, {
     protocol: 'http',
   })
-  const ui = sdk.createInterface(effects, {
-    name: 'Web UI',
-    id: 'ui',
-    description: 'The web interface of Hello World',
-    type: 'ui',
+  const api = sdk.createInterface(effects, {
+    name: 'Ollama API',
+    id: 'api',
+    description: 'Your Ollama API',
+    type: 'api',
     masked: false,
     schemeOverride: null,
     username: null,
@@ -18,7 +18,7 @@ export const setInterfaces = sdk.setupInterfaces(async ({ effects }) => {
     query: {},
   })
 
-  const uiReceipt = await uiMultiOrigin.export([ui])
+  const apiReceipt = await apiMultiOrigin.export([api])
 
-  return [uiReceipt]
+  return [apiReceipt]
 })

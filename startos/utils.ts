@@ -1,1 +1,1 @@
-export const uiPort = 8080
+export const port = 11434
