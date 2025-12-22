@@ -10,7 +10,7 @@ export const main = sdk.setupMain(async ({ effects }) => {
   /**
    * ======================== Daemons ========================
    */
-  return sdk.Daemons.of(effects).addDaemon('ollama', {
+  return sdk.Daemons.of(effects).addDaemon('primary', {
     subcontainer: await sdk.SubContainer.of(
       effects,
       { imageId: 'ollama' },
