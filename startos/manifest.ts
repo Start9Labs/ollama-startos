@@ -1,8 +1,10 @@
 import { setupManifest } from '@start9labs/start-sdk'
 
+const ROCM = process.env.ROCM
+
 export const manifest = setupManifest({
   id: 'ollama',
-  title: 'Ollama',
+  title: `Ollama${ROCM ? ' (for AMD GPUs)' : ''}`,
   license: 'MIT',
   wrapperRepo: 'https://github.com/Start9Labs/ollama-startos',
   upstreamRepo: 'https://github.com/ollama/ollama',
@@ -18,11 +20,24 @@ export const manifest = setupManifest({
   images: {
     ollama: {
       source: {
-        dockerTag: 'ollama/ollama:0.13.5',
+        dockerTag: ROCM ? 'ollama/ollama:0.14.1-rocm' : 'ollama/ollama:0.14.1',
       },
+      nvidiaContainer: !ROCM, // TODO: set nvidia container even for ROCM?
     },
   },
-  // @TODO
-  hardwareRequirements: {},
+  hardwareAcceleration: true,
   dependencies: {},
+  hardwareRequirements: {
+    device: ROCM
+      ? [
+          {
+            class: 'display',
+            product: null,
+            vendor: null,
+            driver: 'amdgpu',
+            description: 'An AMD GPU',
+          },
+        ]
+      : [],
+  },
 })
