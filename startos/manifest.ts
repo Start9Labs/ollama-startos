@@ -4,7 +4,7 @@ const ROCM = process.env.ROCM
 
 export const manifest = setupManifest({
   id: 'ollama',
-  title: `Ollama${ROCM ? ' (for AMD GPUs)' : ''}`,
+  title: 'Ollama',
   license: 'MIT',
   wrapperRepo: 'https://github.com/Start9Labs/ollama-startos',
   upstreamRepo: 'https://github.com/ollama/ollama',
