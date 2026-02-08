@@ -1,3 +1,4 @@
+import { i18n } from './i18n'
 import { sdk } from './sdk'
 import { port } from './utils'
 
@@ -5,7 +6,7 @@ export const main = sdk.setupMain(async ({ effects }) => {
   /**
    * ======================== Setup (optional) ========================
    */
-  console.info('Starting Ollama!')
+  console.info(i18n('Starting Ollama!'))
 
   /**
    * ======================== Daemons ========================
@@ -26,11 +27,11 @@ export const main = sdk.setupMain(async ({ effects }) => {
       command: sdk.useEntrypoint(),
     },
     ready: {
-      display: 'Ollama API',
+      display: i18n('Ollama API'),
       fn: () =>
         sdk.healthCheck.checkPortListening(effects, port, {
-          successMessage: 'Your Ollama API is ready',
-          errorMessage: 'Error launching your Ollama API',
+          successMessage: i18n('Your Ollama API is ready'),
+          errorMessage: i18n('Error launching your Ollama API'),
         }),
     },
     requires: [],

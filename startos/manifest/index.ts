@@ -1,4 +1,5 @@
 import { setupManifest } from '@start9labs/start-sdk'
+import { short, long } from './i18n'
 
 export const manifest = setupManifest({
   id: 'ollama',
@@ -10,19 +11,14 @@ export const manifest = setupManifest({
   marketingSite: 'https://ollama.com/',
   donationUrl: null,
   docsUrl: 'https://docs.ollama.com/',
-  description: {
-    short: 'Chat & build with open models',
-    long: 'Get up and running with self-hosted, open source large language models (LLMs)',
-  },
+  description: { short, long },
   volumes: ['main'],
   images: {
     ollama: {
       source: {
-        dockerTag: 'ollama/ollama:0.13.5',
+        dockerTag: 'ollama/ollama:0.15.5',
       },
     },
   },
-  // @TODO
-  hardwareRequirements: {},
   dependencies: {},
 })
