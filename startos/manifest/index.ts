@@ -16,7 +16,7 @@ export const manifest = setupManifest({
   images: {
     ollama: {
       source: {
-        dockerTag: 'ollama/ollama:0.17.5',
+        dockerTag: 'ollama/ollama:0.18.0',
       },
     },
   },
