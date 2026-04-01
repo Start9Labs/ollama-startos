@@ -6,7 +6,7 @@ export const manifest = setupManifest({
   title: 'Ollama',
   license: 'MIT',
   donationUrl: null,
-  packageRepo: 'https://github.com/Start9Labs/ollama-startos/tree/update/040',
+  packageRepo: 'https://github.com/Start9Labs/ollama-startos',
   upstreamRepo: 'https://github.com/ollama/ollama',
   marketingUrl: 'https://ollama.com/',
   docsUrls: ['https://docs.ollama.com/'],
@@ -15,7 +15,7 @@ export const manifest = setupManifest({
   images: {
     ollama: {
       source: {
-        dockerTag: 'ollama/ollama:0.18.2',
+        dockerTag: 'ollama/ollama:0.19.0',
       },
       arch: ['aarch64', 'x86_64'],
     },
