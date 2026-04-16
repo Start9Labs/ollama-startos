@@ -1,7 +1,7 @@
 import { VersionInfo } from '@start9labs/start-sdk'
 
-export const v_0_19_0_0 = VersionInfo.of({
-  version: '0.19.0:0',
+export const v_0_19_0_1 = VersionInfo.of({
+  version: '0.19.0:1',
   releaseNotes: {
     en_US: 'Update Ollama to 0.19.0',
     es_ES: 'Actualización de Ollama a 0.19.0',
