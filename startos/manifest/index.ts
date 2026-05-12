@@ -27,7 +27,6 @@ export const manifest = setupManifest({
   packageRepo: 'https://github.com/Start9Labs/ollama-startos',
   upstreamRepo: 'https://github.com/ollama/ollama',
   marketingUrl: 'https://ollama.com/',
-  docsUrls: ['https://docs.ollama.com/'],
   description: { short, long },
   volumes: ['main'],
   images: {
