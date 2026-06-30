@@ -1,18 +1,18 @@
 import { VersionInfo, IMPOSSIBLE } from '@start9labs/start-sdk'
 
 export const current = VersionInfo.of({
-  version: '0.30.9:0',
+  version: '0.30.11:0',
   releaseNotes: {
     en_US:
-      'Bumps Ollama → 0.30.9: adds support for the Cohere2Moe architecture, fixes the LFM2 parser/renderer when no thinking is emitted, fixes `ollama launch claude` and other agent use cases that only output a single token, and now returns an error when a single message exceeds the context window. Full notes: https://github.com/ollama/ollama/releases/tag/v0.30.9',
+      'Bumps Ollama → 0.30.11 (includes 0.30.10): Command A and North family models now run on Apple Silicon via the MLX engine, the underlying llama.cpp engine is updated, and agent launching is improved (auto-install Claude Code/opencode, thinking-capability detection) alongside several GPU/memory and inference fixes. Full notes: https://github.com/ollama/ollama/releases/tag/v0.30.11',
     es_ES:
-      'Actualiza Ollama → 0.30.9: añade compatibilidad con la arquitectura Cohere2Moe, corrige el analizador/renderizador LFM2 cuando no se emite razonamiento, corrige `ollama launch claude` y otros casos de uso de agentes que solo generaban un único token, y ahora devuelve un error cuando un solo mensaje supera la ventana de contexto. Notas completas: https://github.com/ollama/ollama/releases/tag/v0.30.9',
+      'Actualiza Ollama → 0.30.11 (incluye 0.30.10): los modelos de las familias Command A y North ahora funcionan en Apple Silicon mediante el motor MLX, se actualiza el motor llama.cpp subyacente y se mejora el lanzamiento de agentes (instalación automática de Claude Code/opencode, detección de capacidad de razonamiento), junto con varias correcciones de GPU/memoria e inferencia. Notas completas: https://github.com/ollama/ollama/releases/tag/v0.30.11',
     de_DE:
-      'Aktualisiert Ollama → 0.30.9: ergänzt Unterstützung für die Cohere2Moe-Architektur, behebt den LFM2-Parser/Renderer, wenn kein Thinking ausgegeben wird, behebt `ollama launch claude` und andere Agenten-Anwendungsfälle, die nur ein einzelnes Token ausgaben, und gibt nun einen Fehler zurück, wenn eine einzelne Nachricht das Kontextfenster überschreitet. Vollständige Hinweise: https://github.com/ollama/ollama/releases/tag/v0.30.9',
+      'Aktualisiert Ollama → 0.30.11 (enthält 0.30.10): Modelle der Command-A- und North-Familie laufen nun über die MLX-Engine auf Apple Silicon, die zugrunde liegende llama.cpp-Engine wurde aktualisiert, und der Agenten-Start wurde verbessert (automatische Installation von Claude Code/opencode, Erkennung der Thinking-Fähigkeit), zusammen mit mehreren GPU-/Speicher- und Inferenz-Korrekturen. Vollständige Hinweise: https://github.com/ollama/ollama/releases/tag/v0.30.11',
     pl_PL:
-      'Aktualizuje Ollama → 0.30.9: dodaje obsługę architektury Cohere2Moe, naprawia parser/renderer LFM2, gdy nie jest emitowane myślenie, naprawia `ollama launch claude` i inne zastosowania agentów, które generowały tylko pojedynczy token, oraz zwraca teraz błąd, gdy pojedyncza wiadomość przekracza okno kontekstu. Pełne informacje: https://github.com/ollama/ollama/releases/tag/v0.30.9',
+      'Aktualizuje Ollama → 0.30.11 (zawiera 0.30.10): modele z rodzin Command A i North działają teraz na Apple Silicon dzięki silnikowi MLX, zaktualizowano bazowy silnik llama.cpp oraz ulepszono uruchamianie agentów (automatyczna instalacja Claude Code/opencode, wykrywanie zdolności myślenia), wraz z kilkoma poprawkami GPU/pamięci i wnioskowania. Pełne informacje: https://github.com/ollama/ollama/releases/tag/v0.30.11',
     fr_FR:
-      'Met à jour Ollama → 0.30.9 : ajoute la prise en charge de l’architecture Cohere2Moe, corrige l’analyseur/rendu LFM2 lorsqu’aucun raisonnement n’est émis, corrige `ollama launch claude` et d’autres cas d’usage d’agents qui ne produisaient qu’un seul jeton, et renvoie désormais une erreur lorsqu’un message dépasse la fenêtre de contexte. Notes complètes : https://github.com/ollama/ollama/releases/tag/v0.30.9',
+      'Met à jour Ollama → 0.30.11 (inclut 0.30.10) : les modèles des familles Command A et North fonctionnent désormais sur Apple Silicon via le moteur MLX, le moteur llama.cpp sous-jacent est mis à jour, et le lancement d’agents est amélioré (installation automatique de Claude Code/opencode, détection de la capacité de raisonnement), avec plusieurs correctifs GPU/mémoire et d’inférence. Notes complètes : https://github.com/ollama/ollama/releases/tag/v0.30.11',
   },
   migrations: {
     up: async ({ effects }) => {},
