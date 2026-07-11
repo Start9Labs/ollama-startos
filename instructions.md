@@ -41,5 +41,5 @@ Models are pulled by your client (Open WebUI's UI, the `ollama` CLI, or a librar
 
 ## Limitations
 
-- **No GPU acceleration.** This package runs Ollama on CPU only. Inference works but is materially slower than GPU-accelerated setups; expect noticeable latency on larger models. A separate `rocm` variant exists for AMD GPUs but requires a supported AMD card attached to the StartOS host.
+- **GPU acceleration depends on your hardware.** StartOS uses your GPU automatically when the host has a supported one — an NVIDIA GPU (via the default variant, using the NVIDIA container runtime) or a **discrete** AMD GPU (via the auto-selected `rocm` variant). Integrated AMD graphics (such as the Radeon 680M in many Ryzen mini-PCs) and hosts with no supported GPU run on CPU: inference still works but is materially slower on larger models.
 - **No upstream environment variables exposed.** `OLLAMA_HOST`, `OLLAMA_MODELS`, `OLLAMA_NUM_PARALLEL`, `OLLAMA_MAX_LOADED_MODELS`, and GPU/CUDA tuning all use upstream defaults; they cannot be changed from StartOS.
