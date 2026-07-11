@@ -10,6 +10,7 @@ Ollama is an API server, not an app you open in a browser. To use it you point a
 
 - The Ollama API on a single network interface (`Ollama API`). It speaks Ollama's HTTP API; there is no built-in web UI in this package.
 - A persistent volume for downloaded models, manifests, and blobs. Models stay on disk across restarts and are included in backups.
+- GPU-accelerated inference when your platform provides a supported GPU (see **GPU acceleration** below); CPU inference otherwise.
 
 ## Getting set up
 
@@ -39,7 +40,16 @@ The `Ollama API` interface exposes Ollama's full HTTP API — `/api/generate`, `
 
 Models are pulled by your client (Open WebUI's UI, the `ollama` CLI, or a library call) and stored on the server in the package's main volume. Pull once, reuse across clients. Large models occupy several GB each, so the volume can grow quickly; backups grow accordingly.
 
+## GPU acceleration
+
+Ollama uses a GPU automatically when the platform provides one — there is nothing to configure:
+
+- **NVIDIA** — your StartOS must be installed from a `-nvidia` image (the flavor of StartOS that ships with the NVIDIA driver). On the other StartOS flavors the driver is absent, so Ollama runs on CPU even if an NVIDIA card is present.
+- **AMD** — served by a separate ROCm variant of this package (x86_64 only). When you install from the marketplace, StartOS picks that variant automatically if your machine has a supported AMD GPU.
+- **Neither** — Ollama falls back to CPU. Inference works but is materially slower; expect noticeable latency on larger models.
+
+To see what was detected, check the service logs shortly after startup: Ollama reports the compute backend it found (CUDA, ROCm, or CPU).
+
 ## Limitations
 
-- **GPU acceleration depends on your hardware.** StartOS uses your GPU automatically when the host has a supported one — an NVIDIA GPU (via the default variant, using the NVIDIA container runtime) or a **discrete** AMD GPU (via the auto-selected `rocm` variant). Integrated AMD graphics (such as the Radeon 680M in many Ryzen mini-PCs) and hosts with no supported GPU run on CPU: inference still works but is materially slower on larger models.
 - **No upstream environment variables exposed.** `OLLAMA_HOST`, `OLLAMA_MODELS`, `OLLAMA_NUM_PARALLEL`, `OLLAMA_MAX_LOADED_MODELS`, and GPU/CUDA tuning all use upstream defaults; they cannot be changed from StartOS.
