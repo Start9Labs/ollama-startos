@@ -19,6 +19,28 @@ const imageConfigs = {
   },
 } as const
 
+// ROCm is unreliable on integrated Radeon (e.g. the 680M in Ryzen APUs), so
+// match only discrete AMD GPUs by product name. StartOS's regex engine has no
+// lookahead, so this is a positive allowlist rather than an iGPU exclusion.
+const AMD_DISCRETE_GPU =
+  '(?i)(Navi\\s*\\d+|Radeon\\s*RX\\s*\\d{3}|Radeon\\s*RX\\s*Vega|Radeon\\s*VII|Instinct)'
+
+// hardwareRequirements per accelerator variant. StartOS auto-selects the most
+// hardware-specific compatible variant per host; variants without an entry here
+// (the default) carry no device requirement and act as the CPU fallback.
+const hwDevices = {
+  rocm: [
+    {
+      class: 'display' as const,
+      product: AMD_DISCRETE_GPU,
+      vendor: null,
+      driver: 'amdgpu',
+      description:
+        'A discrete AMD GPU supported by ROCm (integrated Radeon graphics are not supported)',
+    },
+  ],
+} as const
+
 export const manifest = setupManifest({
   id: 'ollama',
   title: 'Ollama',
@@ -38,21 +60,7 @@ export const manifest = setupManifest({
   },
   hardwareAcceleration: true,
   hardwareRequirements: {
-    device:
-      variant === 'rocm'
-        ? [
-            {
-              class: 'display' as const,
-              // Discrete-AMD allowlist: ROCm crashes on integrated Radeon (e.g. 680M); iGPUs lack these product names and fall back to the generic variant.
-              product:
-                '(?i)(Navi\\s*\\d+|Radeon\\s*RX\\s*\\d{3}|Radeon\\s*RX\\s*Vega|Radeon\\s*VII|Instinct)',
-              vendor: null,
-              driver: 'amdgpu',
-              description:
-                'A discrete AMD GPU supported by ROCm (integrated Radeon graphics are not supported)',
-            },
-          ]
-        : [],
+    device: [...(hwDevices[variant as keyof typeof hwDevices] ?? [])],
   },
   dependencies: {},
 })

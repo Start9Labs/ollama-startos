@@ -17,6 +17,7 @@
 ## Table of Contents
 
 - [Image and Container Runtime](#image-and-container-runtime)
+- [Hardware Acceleration](#hardware-acceleration)
 - [Volume and Data Layout](#volume-and-data-layout)
 - [Installation and First-Run Flow](#installation-and-first-run-flow)
 - [Configuration Management](#configuration-management)
@@ -34,18 +35,31 @@
 
 ## Image and Container Runtime
 
-| Property | Value |
-|----------|-------|
-| Image | `ollama/ollama` (upstream unmodified) |
-| Architectures | x86_64, aarch64 |
-| Entrypoint | Default upstream entrypoint |
+| Property      | Value                                 |
+| ------------- | ------------------------------------- |
+| Image         | `ollama/ollama` (upstream unmodified) |
+| Architectures | x86_64, aarch64                       |
+| Entrypoint    | Default upstream entrypoint           |
+
+---
+
+## Hardware Acceleration
+
+Ollama uses your GPU automatically when the host has a supported one; otherwise it runs on CPU. Only the image differs between variants, and StartOS selects the right one from the detected hardware — there is no manual picker.
+
+| Variant             | Image                         | Auto-selected for                                                                                           |
+| ------------------- | ----------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `generic` (default) | `ollama/ollama`               | Any host. Runs on CPU, and uses an **NVIDIA** GPU when the host has one (via the NVIDIA container runtime). |
+| `rocm`              | `ollama/ollama` (`-rocm` tag) | Hosts with a **discrete** AMD GPU (`amdgpu` driver — Navi / Radeon RX / Instinct).                          |
+
+**AMD GPUs — discrete only:** ROCm is unreliable on integrated Radeon graphics (e.g. the Radeon 680M in Ryzen APUs), so the `rocm` variant is offered only to discrete AMD GPUs, matched by product name. Integrated-Radeon hosts fall back to the `generic` variant (CPU, or NVIDIA if also present). A discrete AMD card StartOS doesn't recognize by product name also falls back — sideload the `-rocm` `.s9pk` manually if you need ROCm on such a card.
 
 ---
 
 ## Volume and Data Layout
 
-| Volume | Mount Point | Purpose |
-|--------|-------------|---------|
+| Volume | Mount Point     | Purpose                                    |
+| ------ | --------------- | ------------------------------------------ |
 | `main` | `/root/.ollama` | All Ollama data (models, blobs, manifests) |
 
 **Key directories on the `main` volume:**
@@ -56,11 +70,11 @@
 
 ## Installation and First-Run Flow
 
-| Step | Upstream | StartOS |
-|------|----------|---------|
-| Installation | `curl -fsSL https://ollama.com/install.sh \| sh` | Install from marketplace or sideload `.s9pk` |
-| Start service | `ollama serve` | Automatic via StartOS |
-| Pull models | `ollama pull <model>` | Use API or a connected UI (e.g. Open WebUI) |
+| Step          | Upstream                                         | StartOS                                      |
+| ------------- | ------------------------------------------------ | -------------------------------------------- |
+| Installation  | `curl -fsSL https://ollama.com/install.sh \| sh` | Install from marketplace or sideload `.s9pk` |
+| Start service | `ollama serve`                                   | Automatic via StartOS                        |
+| Pull models   | `ollama pull <model>`                            | Use API or a connected UI (e.g. Open WebUI)  |
 
 **Key difference:** On StartOS, the Ollama API is exposed as a network interface. Use a compatible client or UI service (such as Open WebUI) to interact with it.
 
@@ -83,9 +97,9 @@ Ollama on StartOS runs with default upstream configuration. No user-configurable
 
 ## Network Access and Interfaces
 
-| Interface | Port | Protocol | Type | Purpose |
-|-----------|------|----------|------|---------|
-| Ollama API | 11434 | HTTP | API | Model inference and management API |
+| Interface  | Port  | Protocol | Type | Purpose                            |
+| ---------- | ----- | -------- | ---- | ---------------------------------- |
+| Ollama API | 11434 | HTTP     | API  | Model inference and management API |
 
 **Access methods (StartOS 0.4.0):**
 
@@ -96,14 +110,14 @@ Ollama on StartOS runs with default upstream configuration. No user-configurable
 
 **API endpoints (subset):**
 
-| Endpoint | Method | Purpose |
-|----------|--------|---------|
-| `/api/generate` | POST | Generate text completion |
-| `/api/chat` | POST | Chat completion |
-| `/api/pull` | POST | Download a model |
-| `/api/tags` | GET | List local models |
-| `/api/show` | POST | Show model info |
-| `/api/delete` | DELETE | Remove a model |
+| Endpoint        | Method | Purpose                  |
+| --------------- | ------ | ------------------------ |
+| `/api/generate` | POST   | Generate text completion |
+| `/api/chat`     | POST   | Chat completion          |
+| `/api/pull`     | POST   | Download a model         |
+| `/api/tags`     | GET    | List local models        |
+| `/api/show`     | POST   | Show model info          |
+| `/api/delete`   | DELETE | Remove a model           |
 
 ---
 
@@ -136,9 +150,9 @@ None. Ollama is a standalone application.
 
 ## Health Checks
 
-| Check | Method | Grace Period |
-|-------|--------|--------------|
-| Ollama API | Port listening on 11434 | Default |
+| Check      | Method                  | Grace Period |
+| ---------- | ----------------------- | ------------ |
+| Ollama API | Port listening on 11434 | Default      |
 
 **Messages:**
 
@@ -149,11 +163,10 @@ None. Ollama is a standalone application.
 
 ## Limitations and Differences
 
-1. **No GPU passthrough** -- StartOS does not currently support GPU passthrough, so inference runs on CPU only
+1. **GPU acceleration needs a supported GPU** -- NVIDIA GPUs are used via the default variant (NVIDIA container runtime); discrete AMD GPUs via the auto-selected `rocm` variant. Integrated AMD graphics and hosts with no supported GPU run on CPU, which is significantly slower on larger models. See [Hardware Acceleration](#hardware-acceleration).
 2. **No exposed configuration** -- environment variables and runtime settings cannot be changed through StartOS
 3. **Large storage requirements** -- models are stored on-device and can consume significant disk space (4-5 GB per 7B model)
 4. **Memory requirements** -- 8 GB RAM minimum for 7B models, 16 GB for 13B, 32 GB for 33B+
-5. **CPU-only performance** -- without GPU acceleration, inference is significantly slower than GPU-accelerated setups
 
 ---
 
@@ -185,6 +198,9 @@ image: ollama/ollama
 architectures:
   - x86_64
   - aarch64
+variants: # auto-selected by StartOS from detected GPU
+  - generic # CPU, plus NVIDIA GPU when present
+  - rocm # discrete AMD GPU only (integrated Radeon falls back to generic)
 volumes:
   main: /root/.ollama
 ports:
