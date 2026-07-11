@@ -45,7 +45,7 @@ Models are pulled by your client (Open WebUI's UI, the `ollama` CLI, or a librar
 Ollama uses a GPU automatically when the platform provides one — there is nothing to configure:
 
 - **NVIDIA** — your StartOS must be installed from a `-nvidia` image (the flavor of StartOS that ships with the NVIDIA driver). On the other StartOS flavors the driver is absent, so Ollama runs on CPU even if an NVIDIA card is present.
-- **AMD** — served by a separate ROCm variant of this package (x86_64 only). When you install from the marketplace, StartOS picks that variant automatically if your machine has a supported AMD GPU.
+- **AMD** — served by a separate ROCm variant of this package (x86_64 only). When you install from the marketplace, StartOS picks that variant automatically if your machine has a supported **discrete** AMD GPU. Integrated Radeon graphics (such as the Radeon 680M in many Ryzen mini-PCs) are not eligible and fall back to CPU.
 - **Neither** — Ollama falls back to CPU. Inference works but is materially slower; expect noticeable latency on larger models.
 
 To see what was detected, check the service logs shortly after startup: Ollama reports the compute backend it found (CUDA, ROCm, or CPU).
