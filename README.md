@@ -54,6 +54,8 @@ The manifest sets `hardwareAcceleration: true`. GPU use is upstream auto-detecti
 
 **NVIDIA (`generic` variant):** The image is declared with `nvidiaContainer: true`. On the `-nvidia` platform flavors of StartOS (`x86_64-nvidia` / `aarch64-nvidia` install images, which bundle the NVIDIA driver and container toolkit), StartOS overlays the host NVIDIA driver userspace into the container and passes through the `/dev/nvidia*` devices, so Ollama's CUDA auto-detection picks up the GPU. On the other StartOS flavors (standard and `-nonfree`), no NVIDIA runtime exists on the host and inference falls back to CPU -- even if an NVIDIA card is physically present.
 
+**NVIDIA Blackwell (sm_121 -- DGX Spark GB10):** Of the bundled CUDA runners, only the CUDA 13 build (`cuda_v13`) targets sm_121; the CUDA 12 runner's SASS tops out at sm_120. `cuda_v13` ships as PTX that the driver JIT-compiles to native code on first load, so the package pins CUDA's JIT cache to the data volume (`CUDA_CACHE_PATH` in `main.ts`) to keep that one-time compilation from repeating on every restart.
+
 **AMD (`rocm` variant):** Built from upstream's ROCm image (x86_64 only). The variant declares a hardware requirement narrowed to _discrete_ AMD GPUs -- the `amdgpu` driver, matched by GPU product name (Navi / Radeon RX / Instinct) -- so StartOS installs it only on machines with a discrete AMD GPU. Integrated Radeon graphics (e.g. the Radeon 680M in Ryzen APUs), where ROCm is unreliable, fall back to `generic` (CPU).
 
 **Verification:** Ollama logs the compute backend it discovered at startup. A CUDA/ROCm entry in the service logs means acceleration is active; "no compatible GPUs were discovered" means it is running on CPU.
