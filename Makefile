@@ -5,7 +5,7 @@
 TARGETS := generic-x86 generic-arm rocm-x86
 ARCHES := x86 arm
 
-include s9pk.mk
+include node_modules/@start9labs/start-sdk/s9pk.mk
 
 .PHONY += generic rocm
 
