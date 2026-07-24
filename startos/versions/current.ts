@@ -1,68 +1,63 @@
 import { VersionInfo, IMPOSSIBLE } from '@start9labs/start-sdk'
 
 export const current = VersionInfo.of({
-  version: '0.31.2:2',
+  version: '0.32.3:0',
   releaseNotes: {
-    en_US: `Updated Ollama to 0.31.2.
+    en_US: `Updated Ollama to 0.32.3 (0.32.2 was withdrawn upstream).
 
-- Enables flash attention on older NVIDIA GPUs (compute capability 6.x).
-- Integrated GPUs can now offload vision models, padding them to fit the available memory.
-- Fixes structured output for thinking models when thinking is disabled.
-- Fixes loading models from paths containing non-UTF-8 characters.
-- Hardens GGUF model creation.
+- Fixes model downloads that stall before sending data.
+- Lowers memory use on Linux CUDA and ROCm integrated GPUs, and adds NVIDIA B200 support via CUDA 12.
+- Adds chat, thinking, and tool calling support for Laguna 2.1 models.
+- Fixes GLM tool calls being silently dropped at the end of generation.
+- Improves Gemma 4 tool calling and multi-turn reasoning.
+- Fixes an MLX model cache leak that could grow memory use across requests.
 - Updates the MLX and llama.cpp engines.
 
-Packaging: persists the CUDA JIT cache on the data volume to improve GPU startup on NVIDIA Blackwell hardware (sm_121, e.g. the DGX Spark GB10), whose CUDA 13 runner compiles its kernels on first load.
+Full release notes: https://github.com/ollama/ollama/releases/tag/v0.32.3`,
+    es_ES: `Actualiza Ollama a 0.32.3 (la versión 0.32.2 fue retirada por el proyecto original).
 
-Full release notes: https://github.com/ollama/ollama/releases/tag/v0.31.2`,
-    es_ES: `Actualiza Ollama a 0.31.2.
-
-- Activa la atención flash en GPU NVIDIA antiguas (capacidad de cómputo 6.x).
-- Las GPU integradas ya pueden descargar modelos de visión, ajustándolos a la memoria disponible.
-- Corrige la salida estructurada en los modelos de razonamiento cuando el razonamiento está desactivado.
-- Corrige la carga de modelos desde rutas que contienen caracteres no UTF-8.
-- Refuerza la creación de modelos GGUF.
+- Corrige las descargas de modelos que se detenían antes de enviar datos.
+- Reduce el uso de memoria en GPU integradas con CUDA y ROCm en Linux, y añade compatibilidad con NVIDIA B200 mediante CUDA 12.
+- Añade compatibilidad de chat, razonamiento y llamadas a herramientas para los modelos Laguna 2.1.
+- Corrige que las llamadas a herramientas de GLM se descartaran silenciosamente al final de la generación.
+- Mejora las llamadas a herramientas y el razonamiento multironda de Gemma 4.
+- Corrige una fuga en la caché de modelos MLX que podía aumentar el uso de memoria entre solicitudes.
 - Actualiza los motores MLX y llama.cpp.
 
-Empaquetado: conserva la caché JIT de CUDA en el volumen de datos para mejorar el arranque en GPU NVIDIA Blackwell (sm_121, p. ej. la DGX Spark GB10), cuyo runner de CUDA 13 compila sus kernels en la primera carga.
+Notas de la versión completas: https://github.com/ollama/ollama/releases/tag/v0.32.3`,
+    de_DE: `Aktualisiert Ollama auf 0.32.3 (Version 0.32.2 wurde vom Projekt zurückgezogen).
 
-Notas de la versión completas: https://github.com/ollama/ollama/releases/tag/v0.31.2`,
-    de_DE: `Aktualisiert Ollama auf 0.31.2.
-
-- Aktiviert Flash Attention auf älteren NVIDIA-GPUs (Compute Capability 6.x).
-- Integrierte GPUs können nun Vision-Modelle auslagern und passen sie an den verfügbaren Speicher an.
-- Behebt die strukturierte Ausgabe bei Thinking-Modellen, wenn Thinking deaktiviert ist.
-- Behebt das Laden von Modellen aus Pfaden mit Nicht-UTF-8-Zeichen.
-- Härtet die Erstellung von GGUF-Modellen ab.
+- Behebt Modell-Downloads, die vor dem Senden von Daten hängen blieben.
+- Senkt den Speicherverbrauch auf integrierten CUDA- und ROCm-GPUs unter Linux und ergänzt NVIDIA-B200-Unterstützung über CUDA 12.
+- Ergänzt Chat, Thinking und Tool-Calling für Laguna-2.1-Modelle.
+- Behebt, dass GLM-Tool-Calls am Ende der Generierung stillschweigend verworfen wurden.
+- Verbessert Tool-Calling und mehrstufiges Reasoning von Gemma 4.
+- Behebt ein Leck im MLX-Modell-Cache, das den Speicherverbrauch über mehrere Anfragen erhöhen konnte.
 - Aktualisiert die MLX- und llama.cpp-Engines.
 
-Paketierung: Der CUDA-JIT-Cache wird auf dem Datenvolume gespeichert, um den GPU-Start auf NVIDIA-Blackwell-Hardware (sm_121, z. B. der DGX Spark GB10) zu verbessern, deren CUDA-13-Runner ihre Kernel beim ersten Laden kompiliert.
+Vollständige Versionshinweise: https://github.com/ollama/ollama/releases/tag/v0.32.3`,
+    pl_PL: `Aktualizuje Ollama do 0.32.3 (wersja 0.32.2 została wycofana przez twórców).
 
-Vollständige Versionshinweise: https://github.com/ollama/ollama/releases/tag/v0.31.2`,
-    pl_PL: `Aktualizuje Ollama do 0.31.2.
-
-- Włącza flash attention na starszych kartach NVIDIA (compute capability 6.x).
-- Zintegrowane układy graficzne mogą teraz obsługiwać modele wizyjne, dopasowując je do dostępnej pamięci.
-- Naprawia ustrukturyzowane wyjście w modelach rozumujących, gdy rozumowanie jest wyłączone.
-- Naprawia wczytywanie modeli ze ścieżek zawierających znaki spoza UTF-8.
-- Wzmacnia proces tworzenia modeli GGUF.
+- Naprawia pobieranie modeli, które zatrzymywało się przed wysłaniem danych.
+- Zmniejsza zużycie pamięci na zintegrowanych układach GPU z CUDA i ROCm w systemie Linux oraz dodaje obsługę NVIDIA B200 przez CUDA 12.
+- Dodaje obsługę czatu, rozumowania i wywoływania narzędzi dla modeli Laguna 2.1.
+- Naprawia ciche pomijanie wywołań narzędzi GLM na końcu generowania.
+- Ulepsza wywoływanie narzędzi i wielokrokowe rozumowanie w Gemma 4.
+- Naprawia wyciek w pamięci podręcznej modeli MLX, który mógł zwiększać zużycie pamięci między żądaniami.
 - Aktualizuje silniki MLX i llama.cpp.
 
-Pakowanie: pamięć podręczna JIT CUDA jest przechowywana na wolumenie danych, aby przyspieszyć uruchamianie na kartach NVIDIA Blackwell (sm_121, np. DGX Spark GB10), których runner CUDA 13 kompiluje jądra przy pierwszym ładowaniu.
+Pełne informacje o wydaniu: https://github.com/ollama/ollama/releases/tag/v0.32.3`,
+    fr_FR: `Met à jour Ollama vers 0.32.3 (la version 0.32.2 a été retirée en amont).
 
-Pełne informacje o wydaniu: https://github.com/ollama/ollama/releases/tag/v0.31.2`,
-    fr_FR: `Met à jour Ollama vers 0.31.2.
-
-- Active flash attention sur les anciens GPU NVIDIA (capacité de calcul 6.x).
-- Les GPU intégrés peuvent désormais décharger les modèles de vision en les ajustant à la mémoire disponible.
-- Corrige la sortie structurée des modèles de raisonnement lorsque le raisonnement est désactivé.
-- Corrige le chargement des modèles depuis des chemins contenant des caractères non UTF-8.
-- Renforce la création des modèles GGUF.
+- Corrige les téléchargements de modèles qui se bloquaient avant l'envoi des données.
+- Réduit l'utilisation mémoire sur les GPU intégrés CUDA et ROCm sous Linux, et ajoute la prise en charge des NVIDIA B200 via CUDA 12.
+- Ajoute la prise en charge du chat, du raisonnement et des appels d'outils pour les modèles Laguna 2.1.
+- Corrige les appels d'outils GLM silencieusement ignorés en fin de génération.
+- Améliore les appels d'outils et le raisonnement multitours de Gemma 4.
+- Corrige une fuite du cache de modèles MLX qui pouvait augmenter l'utilisation mémoire entre les requêtes.
 - Met à jour les moteurs MLX et llama.cpp.
 
-Empaquetage : le cache JIT CUDA est conservé sur le volume de données pour améliorer le démarrage GPU sur le matériel NVIDIA Blackwell (sm_121, p. ex. le DGX Spark GB10), dont le runner CUDA 13 compile ses noyaux au premier chargement.
-
-Notes de version complètes : https://github.com/ollama/ollama/releases/tag/v0.31.2`,
+Notes de version complètes : https://github.com/ollama/ollama/releases/tag/v0.32.3`,
   },
   migrations: {
     up: async ({ effects }) => {},
