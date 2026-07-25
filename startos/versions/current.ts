@@ -1,7 +1,7 @@
 import { VersionInfo, IMPOSSIBLE } from '@start9labs/start-sdk'
 
 export const current = VersionInfo.of({
-  version: '0.32.3:0',
+  version: '0.32.3:1',
   releaseNotes: {
     en_US: `Updated Ollama to 0.32.3 (0.32.2 was withdrawn upstream).
 
