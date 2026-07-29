@@ -1,63 +1,43 @@
 import { VersionInfo, IMPOSSIBLE } from '@start9labs/start-sdk'
 
 export const current = VersionInfo.of({
-  version: '0.32.3:1',
+  version: '0.32.5:0',
   releaseNotes: {
-    en_US: `Updated Ollama to 0.32.3 (0.32.2 was withdrawn upstream).
+    en_US: `Updated Ollama to 0.32.5, a small maintenance release covering 0.32.4 and 0.32.5.
 
-- Fixes model downloads that stall before sending data.
-- Lowers memory use on Linux CUDA and ROCm integrated GPUs, and adds NVIDIA B200 support via CUDA 12.
-- Adds chat, thinking, and tool calling support for Laguna 2.1 models.
-- Fixes GLM tool calls being silently dropped at the end of generation.
-- Improves Gemma 4 tool calling and multi-turn reasoning.
-- Fixes an MLX model cache leak that could grow memory use across requests.
-- Updates the MLX and llama.cpp engines.
+- Fixes Qwen3 MoE decoding when experts are quantized differently, and speeds up its gate/up projection.
+- Quantizes draft-model output heads at the requested type when creating speculative-decoding drafts.
+- The remaining changes target Apple GPUs via the MLX engine and do not affect StartOS.
 
-Full release notes: https://github.com/ollama/ollama/releases/tag/v0.32.3`,
-    es_ES: `Actualiza Ollama a 0.32.3 (la versión 0.32.2 fue retirada por el proyecto original).
+Full release notes: https://github.com/ollama/ollama/releases/tag/v0.32.4 and https://github.com/ollama/ollama/releases/tag/v0.32.5`,
+    es_ES: `Actualiza Ollama a 0.32.5, una pequeña versión de mantenimiento que abarca 0.32.4 y 0.32.5.
 
-- Corrige las descargas de modelos que se detenían antes de enviar datos.
-- Reduce el uso de memoria en GPU integradas con CUDA y ROCm en Linux, y añade compatibilidad con NVIDIA B200 mediante CUDA 12.
-- Añade compatibilidad de chat, razonamiento y llamadas a herramientas para los modelos Laguna 2.1.
-- Corrige que las llamadas a herramientas de GLM se descartaran silenciosamente al final de la generación.
-- Mejora las llamadas a herramientas y el razonamiento multironda de Gemma 4.
-- Corrige una fuga en la caché de modelos MLX que podía aumentar el uso de memoria entre solicitudes.
-- Actualiza los motores MLX y llama.cpp.
+- Corrige la decodificación de Qwen3 MoE cuando los expertos están cuantizados de forma distinta y acelera su proyección gate/up.
+- Cuantiza las cabezas de salida del modelo borrador con el tipo solicitado al crear borradores de decodificación especulativa.
+- El resto de los cambios afectan a las GPU de Apple mediante el motor MLX y no repercuten en StartOS.
 
-Notas de la versión completas: https://github.com/ollama/ollama/releases/tag/v0.32.3`,
-    de_DE: `Aktualisiert Ollama auf 0.32.3 (Version 0.32.2 wurde vom Projekt zurückgezogen).
+Notas de la versión completas: https://github.com/ollama/ollama/releases/tag/v0.32.4 y https://github.com/ollama/ollama/releases/tag/v0.32.5`,
+    de_DE: `Aktualisiert Ollama auf 0.32.5, eine kleine Wartungsversion, die 0.32.4 und 0.32.5 umfasst.
 
-- Behebt Modell-Downloads, die vor dem Senden von Daten hängen blieben.
-- Senkt den Speicherverbrauch auf integrierten CUDA- und ROCm-GPUs unter Linux und ergänzt NVIDIA-B200-Unterstützung über CUDA 12.
-- Ergänzt Chat, Thinking und Tool-Calling für Laguna-2.1-Modelle.
-- Behebt, dass GLM-Tool-Calls am Ende der Generierung stillschweigend verworfen wurden.
-- Verbessert Tool-Calling und mehrstufiges Reasoning von Gemma 4.
-- Behebt ein Leck im MLX-Modell-Cache, das den Speicherverbrauch über mehrere Anfragen erhöhen konnte.
-- Aktualisiert die MLX- und llama.cpp-Engines.
+- Behebt die Qwen3-MoE-Dekodierung, wenn Experten unterschiedlich quantisiert sind, und beschleunigt deren Gate/Up-Projektion.
+- Quantisiert die Ausgabeköpfe des Entwurfsmodells im angeforderten Typ, wenn Entwürfe für spekulatives Dekodieren erstellt werden.
+- Die übrigen Änderungen betreffen Apple-GPUs über die MLX-Engine und wirken sich nicht auf StartOS aus.
 
-Vollständige Versionshinweise: https://github.com/ollama/ollama/releases/tag/v0.32.3`,
-    pl_PL: `Aktualizuje Ollama do 0.32.3 (wersja 0.32.2 została wycofana przez twórców).
+Vollständige Versionshinweise: https://github.com/ollama/ollama/releases/tag/v0.32.4 und https://github.com/ollama/ollama/releases/tag/v0.32.5`,
+    pl_PL: `Aktualizuje Ollama do 0.32.5 — niewielkie wydanie konserwacyjne obejmujące 0.32.4 i 0.32.5.
 
-- Naprawia pobieranie modeli, które zatrzymywało się przed wysłaniem danych.
-- Zmniejsza zużycie pamięci na zintegrowanych układach GPU z CUDA i ROCm w systemie Linux oraz dodaje obsługę NVIDIA B200 przez CUDA 12.
-- Dodaje obsługę czatu, rozumowania i wywoływania narzędzi dla modeli Laguna 2.1.
-- Naprawia ciche pomijanie wywołań narzędzi GLM na końcu generowania.
-- Ulepsza wywoływanie narzędzi i wielokrokowe rozumowanie w Gemma 4.
-- Naprawia wyciek w pamięci podręcznej modeli MLX, który mógł zwiększać zużycie pamięci między żądaniami.
-- Aktualizuje silniki MLX i llama.cpp.
+- Naprawia dekodowanie Qwen3 MoE, gdy eksperci są kwantyzowani w różny sposób, i przyspiesza jego projekcję gate/up.
+- Kwantyzuje głowice wyjściowe modelu roboczego w żądanym typie podczas tworzenia wersji roboczych do dekodowania spekulatywnego.
+- Pozostałe zmiany dotyczą układów GPU Apple w silniku MLX i nie mają wpływu na StartOS.
 
-Pełne informacje o wydaniu: https://github.com/ollama/ollama/releases/tag/v0.32.3`,
-    fr_FR: `Met à jour Ollama vers 0.32.3 (la version 0.32.2 a été retirée en amont).
+Pełne informacje o wydaniu: https://github.com/ollama/ollama/releases/tag/v0.32.4 oraz https://github.com/ollama/ollama/releases/tag/v0.32.5`,
+    fr_FR: `Met à jour Ollama vers 0.32.5, une petite version de maintenance couvrant 0.32.4 et 0.32.5.
 
-- Corrige les téléchargements de modèles qui se bloquaient avant l'envoi des données.
-- Réduit l'utilisation mémoire sur les GPU intégrés CUDA et ROCm sous Linux, et ajoute la prise en charge des NVIDIA B200 via CUDA 12.
-- Ajoute la prise en charge du chat, du raisonnement et des appels d'outils pour les modèles Laguna 2.1.
-- Corrige les appels d'outils GLM silencieusement ignorés en fin de génération.
-- Améliore les appels d'outils et le raisonnement multitours de Gemma 4.
-- Corrige une fuite du cache de modèles MLX qui pouvait augmenter l'utilisation mémoire entre les requêtes.
-- Met à jour les moteurs MLX et llama.cpp.
+- Corrige le décodage Qwen3 MoE lorsque les experts sont quantifiés différemment et accélère sa projection gate/up.
+- Quantifie les têtes de sortie du modèle brouillon au type demandé lors de la création de brouillons pour le décodage spéculatif.
+- Les autres changements concernent les GPU Apple via le moteur MLX et n'affectent pas StartOS.
 
-Notes de version complètes : https://github.com/ollama/ollama/releases/tag/v0.32.3`,
+Notes de version complètes : https://github.com/ollama/ollama/releases/tag/v0.32.4 et https://github.com/ollama/ollama/releases/tag/v0.32.5`,
   },
   migrations: {
     up: async ({ effects }) => {},
