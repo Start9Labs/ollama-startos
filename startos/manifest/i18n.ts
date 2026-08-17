@@ -11,8 +11,7 @@ export const long = {
     'Get up and running with self-hosted, open source large language models (LLMs)',
   es_ES:
     'Pon en marcha modelos de lenguaje grandes (LLM) de código abierto y autoalojados',
-  de_DE:
-    'Starten Sie selbst gehostete, quelloffene große Sprachmodelle (LLMs)',
+  de_DE: 'Starten Sie selbst gehostete, quelloffene große Sprachmodelle (LLMs)',
   pl_PL:
     'Uruchom samodzielnie hostowane, otwartoźródłowe duże modele językowe (LLM)',
   fr_FR:

@@ -23,7 +23,7 @@ const translations = {
     4: 'Twoje API Ollama',
   },
   fr_FR: {
-    0: 'Démarrage d\'Ollama !',
+    0: "Démarrage d'Ollama !",
     1: 'API Ollama',
     2: 'Votre API Ollama est prête',
     3: 'Erreur lors du lancement de votre API Ollama',
