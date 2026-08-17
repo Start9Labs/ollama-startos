@@ -4,197 +4,141 @@
 
 # Ollama on StartOS
 
-> **Upstream docs:** <https://docs.ollama.com/>
->
 > Everything not listed in this document should behave the same as upstream
 > Ollama. If a feature, setting, or behavior is not mentioned here, the
-> upstream documentation is accurate and fully applicable.
+> upstream documentation is accurate and fully applicable — see the
+> Documentation section of `instructions.md` for links.
 
-[Ollama](https://github.com/ollama/ollama) makes it easy to get up and running with self-hosted, open source large language models (LLMs). It supports a wide range of models from the [Ollama library](https://ollama.com/library).
+[Ollama](https://github.com/ollama/ollama) runs large language models locally and serves them over an HTTP API. This package is a thin wrapper: it ships upstream's image unmodified, builds a second variant for AMD GPUs, and exposes the API as a network interface for a client or UI to consume.
+
+- **Upstream repo:** <https://github.com/ollama/ollama>
+- **Wrapper repo:** <https://github.com/Start9Labs/ollama-startos>
 
 ---
 
 ## Table of Contents
 
 - [Image and Container Runtime](#image-and-container-runtime)
-- [GPU Acceleration](#gpu-acceleration)
 - [Volume and Data Layout](#volume-and-data-layout)
-- [Installation and First-Run Flow](#installation-and-first-run-flow)
-- [Configuration Management](#configuration-management)
-- [Network Access and Interfaces](#network-access-and-interfaces)
-- [Actions (StartOS UI)](#actions-startos-ui)
+- [File Models](#file-models)
 - [Dependencies](#dependencies)
-- [Backups and Restore](#backups-and-restore)
+- [Network Access and Interfaces](#network-access-and-interfaces)
+- [Installation and First-Run Flow](#installation-and-first-run-flow)
+- [Actions](#actions)
+- [Tasks](#tasks)
 - [Health Checks](#health-checks)
+- [Backups and Restore](#backups-and-restore)
 - [Limitations and Differences](#limitations-and-differences)
-- [What Is Unchanged from Upstream](#what-is-unchanged-from-upstream)
-- [Contributing](#contributing)
 - [Quick Reference for AI Consumers](#quick-reference-for-ai-consumers)
 
 ---
 
 ## Image and Container Runtime
 
-The package builds in two variants, both from unmodified upstream images:
+The package builds in two variants from unmodified upstream images, and **StartOS picks one for you** — the most hardware-specific variant compatible with the machine. There is no variant selector.
 
-| Property      | `generic` variant                                   | `rocm` variant                                   |
-| ------------- | --------------------------------------------------- | ------------------------------------------------ |
-| Image         | `ollama/ollama` (upstream unmodified)               | `ollama/ollama` ROCm build (upstream unmodified) |
-| Architectures | x86_64, aarch64                                     | x86_64                                           |
-| Entrypoint    | Default upstream entrypoint                         | Default upstream entrypoint                      |
-| GPU support   | NVIDIA -- see [GPU Acceleration](#gpu-acceleration) | AMD -- requires a discrete AMD GPU               |
+| Property      | `generic`                      | `rocm`                                    |
+| ------------- | ------------------------------ | ----------------------------------------- |
+| Image         | `ollama/ollama`                | `ollama/ollama` ROCm build                |
+| Architectures | x86_64, aarch64                | x86_64                                    |
+| Declared for  | Everything not matching `rocm` | A discrete AMD GPU on the `amdgpu` driver |
+| Entrypoint    | Upstream's                     | Upstream's                                |
 
-When installing from a registry, StartOS automatically selects the most specific variant compatible with the machine's hardware: machines with a supported discrete AMD GPU receive `rocm`; all others receive `generic`. Users never pick a variant manually.
+One subcontainer, `ollama-sub`, runs the single `primary` daemon — the one to `attach` to.
 
----
+### GPU acceleration
 
-## GPU Acceleration
+The manifest sets `hardwareAcceleration: true` and nothing else is configurable: GPU use is upstream's own auto-detection.
 
-The manifest sets `hardwareAcceleration: true`. GPU use is upstream auto-detection -- the package exposes nothing to configure.
+**NVIDIA** goes through the `generic` variant, whose image is declared `nvidiaContainer: true`. This only does anything on the `-nvidia` platform flavors of StartOS, which bundle the driver and container toolkit — there, StartOS overlays the host driver userspace into the container and passes the `/dev/nvidia*` devices through, and Ollama's CUDA detection finds the card. On the standard and `-nonfree` flavors there is no NVIDIA runtime on the host, so inference falls back to CPU **even with a card physically present**.
 
-**NVIDIA (`generic` variant):** The image is declared with `nvidiaContainer: true`. On the `-nvidia` platform flavors of StartOS (`x86_64-nvidia` / `aarch64-nvidia` install images, which bundle the NVIDIA driver and container toolkit), StartOS overlays the host NVIDIA driver userspace into the container and passes through the `/dev/nvidia*` devices, so Ollama's CUDA auto-detection picks up the GPU. On the other StartOS flavors (standard and `-nonfree`), no NVIDIA runtime exists on the host and inference falls back to CPU -- even if an NVIDIA card is physically present.
+**AMD** goes through the `rocm` variant, whose hardware requirement is narrowed to _discrete_ AMD GPUs, matched by product name (Navi, Radeon RX, Radeon VII, Instinct). Integrated Radeon graphics — the 680M in Ryzen APUs and similar — are deliberately excluded because ROCm is unreliable on them; those machines get `generic` and run on CPU. The match is a positive allowlist rather than an iGPU exclusion because StartOS's regex engine has no lookahead.
 
-**NVIDIA Blackwell (sm_121 -- DGX Spark GB10):** Of the bundled CUDA runners, only the CUDA 13 build (`cuda_v13`) targets sm_121; the CUDA 12 runner's SASS tops out at sm_120. `cuda_v13` ships as PTX that the driver JIT-compiles to native code on first load, so the package pins CUDA's JIT cache to the data volume (`CUDA_CACHE_PATH` in `main.ts`) to keep that one-time compilation from repeating on every restart.
+**Blackwell (sm_121, DGX Spark GB10)** is the one case needing a package-side setting. Only Ollama's CUDA 13 runner targets sm_121 — the CUDA 12 runner's SASS tops out at sm_120 — and that runner ships as PTX the driver must JIT-compile on first load. The container's default CUDA cache is ephemeral, so that compilation would repeat on every start; the package pins it into the data volume instead:
 
-**AMD (`rocm` variant):** Built from upstream's ROCm image (x86_64 only). The variant declares a hardware requirement narrowed to _discrete_ AMD GPUs -- the `amdgpu` driver, matched by GPU product name (Navi / Radeon RX / Instinct) -- so StartOS installs it only on machines with a discrete AMD GPU. Integrated Radeon graphics (e.g. the Radeon 680M in Ryzen APUs), where ROCm is unreliable, fall back to `generic` (CPU).
+| Variable             | Value                            | Effect                          |
+| -------------------- | -------------------------------- | ------------------------------- |
+| `CUDA_CACHE_PATH`    | `/root/.ollama/.nv/ComputeCache` | The JIT cache survives restarts |
+| `CUDA_CACHE_MAXSIZE` | 4 GiB                            | Room for the compiled backend   |
 
-**Verification:** Ollama logs the compute backend it discovered at startup. A CUDA/ROCm entry in the service logs means acceleration is active; "no compatible GPUs were discovered" means it is running on CPU.
+Both are inert on CPU and on GPUs the CUDA 12 runner serves, which ship real SASS and never JIT.
 
----
+**To check which backend is live**, read the service logs at startup: Ollama names the compute backend it discovered, and reports "no compatible GPUs were discovered" when it is on CPU.
 
 ## Volume and Data Layout
 
-| Volume | Mount Point     | Purpose                                    |
-| ------ | --------------- | ------------------------------------------ |
-| `main` | `/root/.ollama` | All Ollama data (models, blobs, manifests) |
+One volume, holding everything Ollama has on disk.
 
-**Key directories on the `main` volume:**
+| Volume | Mount Point     | Purpose                                                             |
+| ------ | --------------- | ------------------------------------------------------------------- |
+| `main` | `/root/.ollama` | Model blobs and manifests, Ollama's keypair, and the CUDA JIT cache |
 
-- `models/` -- downloaded model files (blobs and manifests)
+Model weights dominate it — a handful of models is tens of gigabytes — and they live here rather than anywhere StartOS treats as cache.
 
----
+## File Models
 
-## Installation and First-Run Flow
+None. Ollama takes no configuration file, and this package models none.
 
-| Step          | Upstream                                         | StartOS                                      |
-| ------------- | ------------------------------------------------ | -------------------------------------------- |
-| Installation  | `curl -fsSL https://ollama.com/install.sh \| sh` | Install from marketplace or sideload `.s9pk` |
-| Start service | `ollama serve`                                   | Automatic via StartOS                        |
-| Pull models   | `ollama pull <model>`                            | Use API or a connected UI (e.g. Open WebUI)  |
-
-**Key difference:** On StartOS, the Ollama API is exposed as a network interface. Use a compatible client or UI service (such as Open WebUI) to interact with it.
-
----
-
-## Configuration Management
-
-Ollama on StartOS runs with default upstream configuration. No user-configurable settings are currently exposed through StartOS actions.
-
-**Configuration NOT exposed on StartOS:**
-
-- `OLLAMA_HOST` -- fixed: `0.0.0.0:11434`
-- `OLLAMA_MODELS` -- fixed: `/root/.ollama`
-- `OLLAMA_NUM_PARALLEL` -- uses upstream default
-- `OLLAMA_MAX_LOADED_MODELS` -- uses upstream default
-- GPU/CUDA settings -- uses upstream auto-detection
-- Proxy settings
-
----
-
-## Network Access and Interfaces
-
-| Interface  | Port  | Protocol | Type | Purpose                            |
-| ---------- | ----- | -------- | ---- | ---------------------------------- |
-| Ollama API | 11434 | HTTP     | API  | Model inference and management API |
-
-**Access methods (StartOS 0.4.0):**
-
-- LAN IP with unique port
-- `<hostname>.local` with unique port
-- Tor `.onion` address
-- Custom domains (if configured)
-
-**API endpoints (subset):**
-
-| Endpoint        | Method | Purpose                  |
-| --------------- | ------ | ------------------------ |
-| `/api/generate` | POST   | Generate text completion |
-| `/api/chat`     | POST   | Chat completion          |
-| `/api/pull`     | POST   | Download a model         |
-| `/api/tags`     | GET    | List local models        |
-| `/api/show`     | POST   | Show model info          |
-| `/api/delete`   | DELETE | Remove a model           |
-
----
-
-## Actions (StartOS UI)
-
-None. Ollama is managed entirely through its API.
-
----
+The only environment it sets is the CUDA JIT cache pair above. Everything else — the listen address, the model directory, parallelism, how many models stay loaded — is left entirely to the image and to Ollama's own defaults, and there is no action or form here that changes any of it.
 
 ## Dependencies
 
-None. Ollama is a standalone application.
+None. Nothing is required, and nothing is exported for a dependent to mount.
 
----
+## Network Access and Interfaces
 
-## Backups and Restore
+One interface: Ollama's HTTP API, which is also what its clients and web UIs speak.
 
-**Included in backup:**
+| Interface  | Id    | Type | Port  | Description     |
+| ---------- | ----- | ---- | ----- | --------------- |
+| Ollama API | `api` | api  | 11434 | Your Ollama API |
 
-- `main` volume -- all Ollama data including downloaded models
+The port is bound on the `api-multi` MultiHost and is not masked.
 
-**Restore behavior:**
+**The API is unauthenticated.** Ollama ships no login, no token, and no per-client authorization, and this package adds none — anything that can reach the interface can list, run, pull, and delete models. Treat the addresses you publish for it as the whole of the access control.
 
-- All models and data are restored
-- No reconfiguration needed
+## Installation and First-Run Flow
 
-**Note:** Backups can be very large depending on the number and size of downloaded models. A single 7B parameter model is typically 4-5 GB.
+Nothing to configure and nothing to reveal: install it, start it, and the API is up. There is no task, no credential, and no setup form.
 
----
+**No model is bundled.** A fresh install serves an API with an empty model list, and the first thing to do is pull one — through the API directly, or through whichever client or UI you point at it. That pull is a large download and the models are what fill the volume.
+
+## Actions
+
+None. Ollama is managed entirely through its API, including pulling and deleting models, so the package adds no action of its own.
+
+## Tasks
+
+None. This package raises no tasks, so the service is never held on a prompt and its ordinary controls are always available.
 
 ## Health Checks
 
-| Check      | Method                  | Grace Period |
-| ---------- | ----------------------- | ------------ |
-| Ollama API | Port listening on 11434 | Default      |
+One check, on the only daemon.
 
-**Messages:**
+| Check     | Displayed    | Method                  |
+| --------- | ------------ | ----------------------- |
+| `primary` | "Ollama API" | Port 11434 is listening |
 
-- Success: "Your Ollama API is ready"
-- Error: "Error launching your Ollama API"
+Ollama binds the port immediately and does not wait on models, so this goes green quickly and a failure means the process itself did not come up — the service logs say why. A GPU it cannot use is **not** a failure here: Ollama falls back to CPU and reports healthy, which is why the log line naming the backend is the thing to read.
 
----
+## Backups and Restore
+
+The `main` volume is copied wholesale — `sdk.Backups.ofVolumes('main')`. No dump step and nothing excluded.
+
+- **Included:** every downloaded model, Ollama's keypair, and the CUDA JIT cache.
+- **Worth knowing:** the model weights are the bulk of it, and they are re-downloadable from upstream. A backup of this service is therefore large in proportion to how little of it is irreplaceable.
+- **Restore:** complete, and the models are immediately available without re-pulling.
 
 ## Limitations and Differences
 
-1. **GPU acceleration requires platform support** -- NVIDIA GPUs are used only on the `-nvidia` StartOS flavors (which bundle the NVIDIA driver and container runtime); discrete AMD GPUs are served by the `rocm` variant (x86_64 only). On a standard or `-nonfree` StartOS install, inference runs on CPU even if a GPU is present. See [GPU Acceleration](#gpu-acceleration).
-2. **No exposed configuration** -- environment variables and runtime settings cannot be changed through StartOS
-3. **Large storage requirements** -- models are stored on-device and can consume significant disk space (4-5 GB per 7B model)
-4. **Memory requirements** -- 8 GB RAM minimum for 7B models, 16 GB for 13B, 32 GB for 33B+
-5. **CPU fallback performance** -- without GPU acceleration, inference is significantly slower than GPU-accelerated setups
-
----
-
-## What Is Unchanged from Upstream
-
-- Full Ollama API compatibility
-- GPU auto-detection (CUDA / ROCm / CPU fallback)
-- All supported model formats (GGUF, Safetensors via conversion)
-- Model pulling from Ollama library
-- Chat and generate endpoints
-- Concurrent request handling
-- Model loading and unloading
-- Modelfile support for custom models
-- Embedding generation
-- All client library compatibility (Python, JavaScript, Go, etc.)
-
----
-
-## Contributing
-
-Build and development workflow follow the StartOS packaging guide: <https://docs.start9.com/packaging>. Keep `README.md`, `instructions.md`, and `AGENTS.md` in sync with any change to user-visible behavior or package structure.
+1. **The API is unauthenticated**, as upstream ships it.
+2. **Nothing is configurable.** No actions, no file model, and none of Ollama's tuning environment variables are exposed.
+3. **The variant is chosen by StartOS, not by you**, from the machine's hardware.
+4. **NVIDIA acceleration requires an `-nvidia` flavor of StartOS.** On other flavors a present NVIDIA card is unused and inference silently runs on CPU.
+5. **Integrated AMD GPUs are excluded on purpose.** They fall back to the CPU variant rather than attempting ROCm.
+6. **The `rocm` variant is x86_64 only.**
+7. **Backups include model weights**, which can make them very large.
+8. **No riscv64 build.**
 
 ---
 
@@ -202,19 +146,23 @@ Build and development workflow follow the StartOS packaging guide: <https://docs
 
 ```yaml
 package_id: ollama
-image: ollama/ollama
-variants:
-  generic:
-    architectures: [x86_64, aarch64]
-    gpu: NVIDIA CUDA on -nvidia StartOS flavors; CPU fallback otherwise
-  rocm:
-    architectures: [x86_64]
-    gpu: AMD ROCm; requires a discrete AMD GPU (auto-selected; integrated Radeon falls back to generic)
+image: ollama/ollama # rocm variant uses upstream's ROCm build of the same image
+architectures:
+  - x86_64
+  - aarch64 # generic variant only; rocm is x86_64
+subcontainers:
+  - ollama-sub # the only container
 volumes:
   main: /root/.ollama
-ports:
-  api: 11434
-dependencies: none
-startos_managed_env_vars: []
-actions: none
+file_models: [] # Ollama takes no configuration file
+startos_managed_env_vars:
+  - CUDA_CACHE_PATH
+  - CUDA_CACHE_MAXSIZE
+dependencies: []
+interfaces:
+  api: { type: api, port: 11434 } # unauthenticated
+actions: []
+tasks: []
+health_checks:
+  - primary # displayed "Ollama API"
 ```
