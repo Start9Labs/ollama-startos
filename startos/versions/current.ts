@@ -1,58 +1,58 @@
 import { VersionInfo, IMPOSSIBLE } from '@start9labs/start-sdk'
 
 export const current = VersionInfo.of({
-  version: '0.32.13:0',
+  version: '0.32.15:0',
   releaseNotes: {
-    en_US: `Updated Ollama to 0.32.13, covering everything released since 0.32.9.
+    en_US: `Updated Ollama to 0.32.15, covering everything released since 0.32.13. A performance and stability release:
 
-- Adds Qwen 3.8 27B (\`ollama run qwen3.8:27b\`), with support for developer instructions.
-- Models that set no \`repeat_penalty\` now default to 1.0 (off) rather than 1.1, matching other engines and speeding up speculative decoding. If an older model starts repeating itself, set the parameter per model.
-- The OpenAI-compatible responses API gained web search, and \`ollama launch\` now supports DeepSeek Harness and Meta's Muse Code agentic coding CLI.
-- Fixed blob verification being skipped when an OCI manifest's config and layer share a digest.
-- Faster prefill on NVFP4 MLX models, and template updates for Muse Glimmer.
+- Resolved model metadata is cached between requests, cutting time to first token roughly in half.
+- Chat and generate no longer wedge after a mid-stream parser error.
+- WebP images are transcoded for llama-server, so vision models accept them.
+- Qwen 3.8 system messages are normalized, so a system message that is not the first message is handled consistently.
+- Updated the MLX and llama.cpp dependencies.
 
-Full release notes: https://github.com/ollama/ollama/releases/tag/v0.32.13
-All changes since 0.32.9: https://github.com/ollama/ollama/compare/v0.32.9...v0.32.13`,
-    es_ES: `Actualiza Ollama a 0.32.13, incluyendo todo lo publicado desde 0.32.9.
+Full release notes: https://github.com/ollama/ollama/releases/tag/v0.32.15
+All changes since 0.32.13: https://github.com/ollama/ollama/compare/v0.32.13...v0.32.15`,
+    es_ES: `Actualiza Ollama a 0.32.15, incluyendo todo lo publicado desde 0.32.13. Una versión de rendimiento y estabilidad:
 
-- Añade Qwen 3.8 27B (\`ollama run qwen3.8:27b\`), con soporte para instrucciones de desarrollador.
-- Los modelos que no definen \`repeat_penalty\` ahora usan 1.0 (desactivado) en lugar de 1.1, igual que otros motores, lo que acelera la decodificación especulativa. Si un modelo antiguo empieza a repetirse, ajusta el parámetro para ese modelo.
-- La API de respuestas compatible con OpenAI incorpora búsqueda web, y \`ollama launch\` ya admite DeepSeek Harness y Muse Code, la CLI de programación con agentes de Meta.
-- Se corrigió la omisión de la verificación de blobs cuando la configuración y la capa de un manifiesto OCI comparten el mismo digest.
-- Prellenado más rápido en modelos NVFP4 MLX y actualizaciones de plantillas para Muse Glimmer.
+- Los metadatos de modelo resueltos se almacenan en caché entre solicitudes, lo que reduce aproximadamente a la mitad el tiempo hasta el primer token.
+- El chat y la generación ya no se bloquean tras un error del analizador a mitad de la transmisión.
+- Las imágenes WebP se transcodifican para llama-server, de modo que los modelos de visión las aceptan.
+- Los mensajes de sistema de Qwen 3.8 se normalizan, de modo que un mensaje de sistema que no es el primero se trata de forma coherente.
+- Se actualizaron las dependencias MLX y llama.cpp.
 
-Notas de la versión completas: https://github.com/ollama/ollama/releases/tag/v0.32.13
-Todos los cambios desde 0.32.9: https://github.com/ollama/ollama/compare/v0.32.9...v0.32.13`,
-    de_DE: `Aktualisiert Ollama auf 0.32.13 und umfasst alles, was seit 0.32.9 veröffentlicht wurde.
+Notas de la versión completas: https://github.com/ollama/ollama/releases/tag/v0.32.15
+Todos los cambios desde 0.32.13: https://github.com/ollama/ollama/compare/v0.32.13...v0.32.15`,
+    de_DE: `Aktualisiert Ollama auf 0.32.15 und umfasst alles, was seit 0.32.13 veröffentlicht wurde. Eine Version für Leistung und Stabilität:
 
-- Ergänzt Qwen 3.8 27B (\`ollama run qwen3.8:27b\`) samt Unterstützung für Entwickleranweisungen.
-- Modelle ohne gesetztes \`repeat_penalty\` verwenden jetzt standardmäßig 1.0 (aus) statt 1.1, wie andere Engines auch, was die spekulative Dekodierung beschleunigt. Wiederholt sich ein älteres Modell, setze den Parameter für dieses Modell.
-- Die OpenAI-kompatible Responses-API unterstützt nun Websuche, und \`ollama launch\` kommt mit DeepSeek Harness sowie Muse Code zurecht, Metas CLI für agentisches Programmieren.
-- Behoben: Die Blob-Prüfung wurde übersprungen, wenn Konfiguration und Layer eines OCI-Manifests denselben Digest haben.
-- Schnelleres Prefill bei NVFP4-MLX-Modellen und Template-Aktualisierungen für Muse Glimmer.
+- Aufgelöste Modell-Metadaten werden zwischen Anfragen zwischengespeichert, wodurch sich die Zeit bis zum ersten Token etwa halbiert.
+- Chat und Generierung bleiben nach einem Parser-Fehler mitten im Stream nicht mehr hängen.
+- WebP-Bilder werden für llama-server transkodiert, sodass Vision-Modelle sie akzeptieren.
+- Systemnachrichten von Qwen 3.8 werden normalisiert, sodass eine Systemnachricht, die nicht die erste Nachricht ist, einheitlich behandelt wird.
+- Die Abhängigkeiten MLX und llama.cpp wurden aktualisiert.
 
-Vollständige Versionshinweise: https://github.com/ollama/ollama/releases/tag/v0.32.13
-Alle Änderungen seit 0.32.9: https://github.com/ollama/ollama/compare/v0.32.9...v0.32.13`,
-    pl_PL: `Aktualizuje Ollama do 0.32.13, obejmując wszystko, co wydano od wersji 0.32.9.
+Vollständige Versionshinweise: https://github.com/ollama/ollama/releases/tag/v0.32.15
+Alle Änderungen seit 0.32.13: https://github.com/ollama/ollama/compare/v0.32.13...v0.32.15`,
+    pl_PL: `Aktualizuje Ollama do 0.32.15, obejmując wszystko, co wydano od wersji 0.32.13. Wydanie poprawiające wydajność i stabilność:
 
-- Dodaje Qwen 3.8 27B (\`ollama run qwen3.8:27b\`) wraz z obsługą instrukcji deweloperskich.
-- Modele bez ustawionego \`repeat_penalty\` domyślnie używają teraz 1.0 (wyłączone) zamiast 1.1, tak jak inne silniki, co przyspiesza dekodowanie spekulacyjne. Jeśli starszy model zacznie się powtarzać, ustaw ten parametr dla niego.
-- Zgodny z OpenAI interfejs responses obsługuje teraz wyszukiwanie w sieci, a \`ollama launch\` współpracuje z DeepSeek Harness oraz Muse Code, agentowym CLI do programowania od Meta.
-- Naprawiono pomijanie weryfikacji blobów, gdy konfiguracja i warstwa manifestu OCI mają ten sam digest.
-- Szybsze wypełnianie wstępne w modelach NVFP4 MLX oraz aktualizacje szablonów Muse Glimmer.
+- Ustalone metadane modelu są buforowane między żądaniami, co skraca czas do pierwszego tokenu mniej więcej o połowę.
+- Czat i generowanie nie zawieszają się już po błędzie parsera w trakcie strumienia.
+- Obrazy WebP są transkodowane dla llama-server, dzięki czemu modele wizyjne je akceptują.
+- Wiadomości systemowe Qwen 3.8 są normalizowane, dzięki czemu wiadomość systemowa, która nie jest pierwsza, jest obsługiwana spójnie.
+- Zaktualizowano zależności MLX i llama.cpp.
 
-Pełne informacje o wydaniu: https://github.com/ollama/ollama/releases/tag/v0.32.13
-Wszystkie zmiany od wersji 0.32.9: https://github.com/ollama/ollama/compare/v0.32.9...v0.32.13`,
-    fr_FR: `Met à jour Ollama vers 0.32.13, en couvrant tout ce qui est sorti depuis 0.32.9.
+Pełne informacje o wydaniu: https://github.com/ollama/ollama/releases/tag/v0.32.15
+Wszystkie zmiany od wersji 0.32.13: https://github.com/ollama/ollama/compare/v0.32.13...v0.32.15`,
+    fr_FR: `Met à jour Ollama vers 0.32.15, en couvrant tout ce qui est sorti depuis 0.32.13. Une version axée sur les performances et la stabilité :
 
-- Ajoute Qwen 3.8 27B (\`ollama run qwen3.8:27b\`), avec la prise en charge des instructions développeur.
-- Les modèles sans \`repeat_penalty\` défini utilisent désormais 1.0 (désactivé) au lieu de 1.1, comme les autres moteurs, ce qui accélère le décodage spéculatif. Si un ancien modèle se met à se répéter, définissez le paramètre pour ce modèle.
-- L'API responses compatible OpenAI prend en charge la recherche web, et \`ollama launch\` fonctionne maintenant avec DeepSeek Harness et Muse Code, la CLI de programmation agentique de Meta.
-- Correction de la vérification des blobs ignorée lorsque la configuration et la couche d'un manifeste OCI partagent le même digest.
-- Préremplissage plus rapide sur les modèles NVFP4 MLX et mises à jour des modèles de prompt pour Muse Glimmer.
+- Les métadonnées de modèle résolues sont mises en cache entre les requêtes, ce qui réduit de moitié environ le délai avant le premier jeton.
+- Le chat et la génération ne se bloquent plus après une erreur d'analyse survenue en cours de flux.
+- Les images WebP sont transcodées pour llama-server, si bien que les modèles de vision les acceptent.
+- Les messages système de Qwen 3.8 sont normalisés, si bien qu'un message système qui n'est pas le premier est traité de manière cohérente.
+- Les dépendances MLX et llama.cpp ont été mises à jour.
 
-Notes de version complètes : https://github.com/ollama/ollama/releases/tag/v0.32.13
-Tous les changements depuis 0.32.9 : https://github.com/ollama/ollama/compare/v0.32.9...v0.32.13`,
+Notes de version complètes : https://github.com/ollama/ollama/releases/tag/v0.32.15
+Tous les changements depuis 0.32.13 : https://github.com/ollama/ollama/compare/v0.32.13...v0.32.15`,
   },
   migrations: {
     up: async ({ effects }) => {},
