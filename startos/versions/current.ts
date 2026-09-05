@@ -1,43 +1,48 @@
 import { VersionInfo, IMPOSSIBLE } from '@start9labs/start-sdk'
 
 export const current = VersionInfo.of({
-  version: '0.33.2:0',
+  version: '0.33.3:0',
   releaseNotes: {
-    en_US: `Updated Ollama to 0.33.2, replacing the unreleased 0.33.1 build.
+    en_US: `Updated Ollama to 0.33.3, covering everything released since 0.33.0.
 
-- The bundled llama.cpp inference engine was updated to b10630, picking up upstream model and performance fixes, and its Linux container build was repaired (0.33.1).
-- 0.33.2 itself changes nothing a StartOS user can reach: it fixes the macOS and Windows desktop app and the Claude Desktop proxy, and removes unused server code.
+- Honors the default generation parameters defined by GGUF models.
+- Reports cached prompt tokens in API usage data.
+- Updates the bundled llama.cpp inference engine to b10760.
 
-Full release notes: https://github.com/ollama/ollama/releases/tag/v0.33.2
-All changes since 0.33.0: https://github.com/ollama/ollama/compare/v0.33.0...v0.33.2`,
-    es_ES: `Actualiza Ollama a 0.33.2, en sustitución de la versión 0.33.1 que no llegó a publicarse.
+Full release notes: https://github.com/ollama/ollama/releases/tag/v0.33.3
+All changes since 0.33.0: https://github.com/ollama/ollama/compare/v0.33.0...v0.33.3`,
+    es_ES: `Actualiza Ollama a 0.33.3 e incluye todo lo publicado desde la versión 0.33.0.
 
-- El motor de inferencia llama.cpp incluido se actualizó a b10630, incorporando correcciones de modelos y de rendimiento del proyecto original, y se reparó su compilación del contenedor para Linux (0.33.1).
-- La versión 0.33.2 en sí no cambia nada que un usuario de StartOS pueda utilizar: corrige la aplicación de escritorio de macOS y Windows y el proxy de Claude Desktop, y elimina código de servidor sin uso.
+- Respeta los parámetros de generación predeterminados definidos por los modelos GGUF.
+- Informa de los tokens de indicación almacenados en caché en los datos de uso de la API.
+- Actualiza el motor de inferencia llama.cpp incluido a b10760.
 
-Notas de la versión completas: https://github.com/ollama/ollama/releases/tag/v0.33.2
-Todos los cambios desde 0.33.0: https://github.com/ollama/ollama/compare/v0.33.0...v0.33.2`,
-    de_DE: `Aktualisiert Ollama auf 0.33.2 und ersetzt damit die nie veröffentlichte Version 0.33.1.
+Notas de la versión completas: https://github.com/ollama/ollama/releases/tag/v0.33.3
+Todos los cambios desde 0.33.0: https://github.com/ollama/ollama/compare/v0.33.0...v0.33.3`,
+    de_DE: `Aktualisiert Ollama auf 0.33.3 und umfasst alles, was seit Version 0.33.0 veröffentlicht wurde.
 
-- Die mitgelieferte Inferenz-Engine llama.cpp wurde auf b10630 aktualisiert und übernimmt Modell- und Leistungskorrekturen des Ursprungsprojekts; ihr Linux-Container-Build wurde repariert (0.33.1).
-- Version 0.33.2 selbst ändert nichts, was unter StartOS erreichbar ist: Sie korrigiert die Desktop-Anwendung für macOS und Windows sowie den Claude-Desktop-Proxy und entfernt ungenutzten Servercode.
+- Berücksichtigt die in GGUF-Modellen definierten Standardparameter für die Generierung.
+- Meldet zwischengespeicherte Prompt-Tokens in den API-Nutzungsdaten.
+- Aktualisiert die mitgelieferte llama.cpp-Inferenz-Engine auf b10760.
 
-Vollständige Versionshinweise: https://github.com/ollama/ollama/releases/tag/v0.33.2
-Alle Änderungen seit 0.33.0: https://github.com/ollama/ollama/compare/v0.33.0...v0.33.2`,
-    pl_PL: `Aktualizuje Ollama do 0.33.2, zastępując nieopublikowane wydanie 0.33.1.
+Vollständige Versionshinweise: https://github.com/ollama/ollama/releases/tag/v0.33.3
+Alle Änderungen seit 0.33.0: https://github.com/ollama/ollama/compare/v0.33.0...v0.33.3`,
+    pl_PL: `Aktualizuje Ollama do 0.33.3, obejmując wszystko, co wydano od wersji 0.33.0.
 
-- Dołączony silnik wnioskowania llama.cpp zaktualizowano do b10630, przejmując poprawki modeli i wydajności z projektu źródłowego, oraz naprawiono jego budowanie kontenera dla systemu Linux (0.33.1).
-- Samo wydanie 0.33.2 nie zmienia niczego, co jest dostępne w StartOS: poprawia aplikację desktopową dla macOS i Windows oraz proxy Claude Desktop, a także usuwa nieużywany kod serwera.
+- Uwzględnia domyślne parametry generowania zdefiniowane przez modele GGUF.
+- Podaje liczbę tokenów podpowiedzi zapisanych w pamięci podręcznej w danych użycia API.
+- Aktualizuje dołączony silnik wnioskowania llama.cpp do wersji b10760.
 
-Pełne informacje o wydaniu: https://github.com/ollama/ollama/releases/tag/v0.33.2
-Wszystkie zmiany od wersji 0.33.0: https://github.com/ollama/ollama/compare/v0.33.0...v0.33.2`,
-    fr_FR: `Met à jour Ollama vers 0.33.2, en remplacement de la version 0.33.1 jamais publiée.
+Pełne informacje o wydaniu: https://github.com/ollama/ollama/releases/tag/v0.33.3
+Wszystkie zmiany od wersji 0.33.0: https://github.com/ollama/ollama/compare/v0.33.0...v0.33.3`,
+    fr_FR: `Met à jour Ollama vers la version 0.33.3 et inclut tout ce qui a été publié depuis la version 0.33.0.
 
-- Le moteur d'inférence llama.cpp intégré est passé à b10630, ce qui apporte des correctifs de modèles et de performances du projet amont, et sa construction du conteneur pour Linux a été réparée (0.33.1).
-- La version 0.33.2 elle-même ne change rien d'accessible depuis StartOS : elle corrige l'application de bureau macOS et Windows ainsi que le proxy Claude Desktop, et supprime du code serveur inutilisé.
+- Respecte les paramètres de génération par défaut définis par les modèles GGUF.
+- Indique le nombre de jetons de prompt mis en cache dans les données d'utilisation de l'API.
+- Met à jour le moteur d'inférence llama.cpp intégré vers b10760.
 
-Notes de version complètes : https://github.com/ollama/ollama/releases/tag/v0.33.2
-Tous les changements depuis 0.33.0 : https://github.com/ollama/ollama/compare/v0.33.0...v0.33.2`,
+Notes de version complètes : https://github.com/ollama/ollama/releases/tag/v0.33.3
+Tous les changements depuis la version 0.33.0 : https://github.com/ollama/ollama/compare/v0.33.0...v0.33.3`,
   },
   migrations: {
     up: async ({ effects }) => {},
