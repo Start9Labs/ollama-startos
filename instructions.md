@@ -9,7 +9,7 @@ Ollama is an API server, not an app you open in a browser. To use it you point a
 ## What you get on StartOS
 
 - The Ollama API on a single network interface (`Ollama API`). It speaks Ollama's HTTP API; there is no built-in web UI in this package.
-- A persistent volume for downloaded models, manifests, and blobs. Models stay on disk across restarts and are included in backups.
+- A persistent volume for downloaded models, manifests, and blobs. Models stay on disk across restarts but are excluded from backups; after a restore, pull them again.
 - GPU-accelerated inference when your platform provides a supported GPU (see **GPU acceleration** below); CPU inference otherwise.
 
 ## Getting set up
@@ -38,7 +38,7 @@ The `Ollama API` interface exposes Ollama's full HTTP API — `/api/generate`, `
 
 ### Models
 
-Models are pulled by your client (Open WebUI's UI, the `ollama` CLI, or a library call) and stored on the server in the package's main volume. Pull once, reuse across clients. Large models occupy several GB each, so the volume can grow quickly; backups grow accordingly.
+Models are pulled by your client (Open WebUI's UI, the `ollama` CLI, or a library call) and stored on the server in the package's main volume. Pull once, reuse across clients. Large models occupy several GB each, so the volume can grow quickly; backups do not, since models are excluded from them.
 
 ## GPU acceleration
 

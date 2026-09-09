@@ -123,11 +123,11 @@ Ollama binds the port immediately and does not wait on models, so this goes gree
 
 ## Backups and Restore
 
-The `main` volume is copied wholesale — `sdk.Backups.ofVolumes('main')`. No dump step and nothing excluded.
+The `main` volume is backed up — `sdk.Backups.ofVolumes('main')` — with one exclusion: `setOptions({ exclude: ['models/'] })` leaves out `/root/.ollama/models`, where pulled models keep their manifests and blobs. No dump step.
 
-- **Included:** every downloaded model, Ollama's keypair, and the CUDA JIT cache.
-- **Worth knowing:** the model weights are the bulk of it, and they are re-downloadable from upstream. A backup of this service is therefore large in proportion to how little of it is irreplaceable.
-- **Restore:** complete, and the models are immediately available without re-pulling.
+- **Included:** Ollama's keypair and the CUDA JIT cache.
+- **Excluded:** every downloaded model. Weights are re-downloadable from upstream, so the backup stays small rather than being dominated by the models.
+- **Restore:** complete for everything but the models, and nothing re-pulls them on its own: the restored instance lists no models until your client pulls them again.
 
 ## Limitations and Differences
 
@@ -137,7 +137,7 @@ The `main` volume is copied wholesale — `sdk.Backups.ofVolumes('main')`. No du
 4. **NVIDIA acceleration requires an `-nvidia` flavor of StartOS.** On other flavors a present NVIDIA card is unused and inference silently runs on CPU.
 5. **Integrated AMD GPUs are excluded on purpose.** They fall back to the CPU variant rather than attempting ROCm.
 6. **The `rocm` variant is x86_64 only.**
-7. **Backups include model weights**, which can make them very large.
+7. **Backups exclude model weights.** After a restore, pull the models you need again.
 8. **No riscv64 build.**
 
 ---
