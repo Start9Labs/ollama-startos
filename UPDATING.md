@@ -4,16 +4,20 @@ Ollama ships as a prebuilt upstream Docker image; no source build or submodule i
 
 ## Determining the upstream version
 
-- **Ollama** ([`ollama/ollama`](https://github.com/ollama/ollama)) — latest GitHub release:
+- **Ollama** ([`ollama/ollama`](https://github.com/ollama/ollama)) — inspect recent tags and select the newest stable release:
 
   ```bash
-  gh release view -R ollama/ollama --json tagName -q .tagName
+  gh api 'repos/ollama/ollama/tags?per_page=30' --jq '.[].name'
+  gh release view -R ollama/ollama "v<version>" --json tagName,isDraft,isPrerelease,url
   ```
 
-  Cross-check that the matching `-rocm` tag has been published to Docker Hub (the rocm variant lags occasionally):
+  Verify the exact generic and ROCm tags through the Docker Hub API (the ROCm variant occasionally lags):
 
   ```bash
-  curl -fsSL "https://hub.docker.com/v2/repositories/ollama/ollama/tags?page_size=20&ordering=last_updated" | jq -r '.results[].name'
+  for tag in '<version>' '<version>-rocm'; do
+    curl -fsSL "https://hub.docker.com/v2/repositories/ollama/ollama/tags/$tag" \
+      | jq '{name, digest, images: [.images[] | {architecture, os, status}]}'
+  done
   ```
 
   Pinned in `startos/manifest/index.ts` as `imageConfigs.generic.source.dockerTag` (`ollama/ollama:<version>`) and `imageConfigs.rocm.source.dockerTag` (`ollama/ollama:<version>-rocm`).
