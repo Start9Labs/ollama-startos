@@ -99,7 +99,7 @@ The port is bound on the `api-multi` MultiHost and is not masked.
 
 ## Installation and First-Run Flow
 
-Nothing to configure and nothing to reveal: install it, start it, and the API is up. There is no task, no credential, and no setup form.
+The upstream image serves the API when the service is started. There is no task, no credential, and no setup form.
 
 **No model is bundled.** A fresh install serves an API with an empty model list, and the first thing to do is pull one — through the API directly, or through whichever client or UI you point at it. That pull is a large download and the models are what fill the volume.
 
