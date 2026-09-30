@@ -14,7 +14,7 @@ Ollama is an API server, not an app you open in a browser. To use it you point a
 
 ## Getting set up
 
-Ollama needs no setup of its own — it starts and the API is ready. The work is connecting a client and pulling at least one model.
+Start **Ollama** after installation, then connect a client and pull at least one model.
 
 ### Option A — Use Open WebUI on this StartOS (recommended)
 
@@ -25,7 +25,7 @@ Ollama needs no setup of its own — it starts and the API is ready. The work is
 
 1. Open the **Ollama API** interface and copy the address — this is your `OLLAMA_HOST`.
 2. Point your client at it. Examples:
-   - **`ollama` CLI** on your laptop: `OLLAMA_HOST=<address> ollama pull llama3` then `ollama run llama3`.
+   - **`ollama` CLI** on your laptop: `export OLLAMA_HOST=<address>`, then `ollama pull llama3` and `ollama run llama3` in that terminal.
    - **Official libraries** ([`ollama-python`](https://github.com/ollama/ollama-python), [`ollama-js`](https://github.com/ollama/ollama-js)): pass the host to the client constructor.
    - **Any third-party app** that speaks the Ollama HTTP API.
 3. Pull a model on first use — `ollama pull <model>` (CLI) or the equivalent in your client. Downloaded models persist on the server.
