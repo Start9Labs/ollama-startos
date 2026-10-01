@@ -4,7 +4,14 @@ Ollama ships as a prebuilt upstream Docker image; no source build or submodule i
 
 ## Determining the upstream version
 
-- **Ollama** ([`ollama/ollama`](https://github.com/ollama/ollama)) — inspect recent tags and select the newest stable release:
+- **Ollama** ([`ollama/ollama`](https://github.com/ollama/ollama)) — upstream ships stable patch releases once or twice a week, so this package updates **at most every two weeks**: **upstream moved only when the pinned release is at least 14 days old _and_ a newer stable release exists.** A newer release inside that window is never a reason to bump. Check the age of the current pin first:
+
+  ```bash
+  PIN=$(grep -oE "ollama/ollama:[0-9.]+" startos/manifest/index.ts | head -1 | cut -d: -f2)
+  echo "v$PIN is $(( ($(date +%s) - $(date -d "$(gh release view -R ollama/ollama "v$PIN" --json publishedAt -q .publishedAt)" +%s)) / 86400 )) days old"
+  ```
+
+  Under 14 days, there is no update. Otherwise inspect recent tags and select the newest stable release — never an `-rc` pre-release:
 
   ```bash
   gh api 'repos/ollama/ollama/tags?per_page=30' --jq '.[].name'
