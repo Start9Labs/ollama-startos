@@ -18,15 +18,23 @@ Freshly scaffolded? Work the
 guide page, not a file in this repo — read it, don't copy it in.
 
 Keep `README.md` (technical reference for an AI support or administering agent) and
-`instructions.md` (end-user docs) in sync with your changes.
+`instructions.md` (end-user docs) in sync with your changes. This file restates neither:
+whoever changes the package has both, so it carries only what they don't — repo mechanics,
+a change that looks right and is not, where the next thing gets added, a naming trap, a
+build or test invocation particular to this repo.
 
-**Bugs and feature requests are GitHub issues on this repo** — file them as you find them.
+**Fix a defect you spot rather than reporting it** — you have the package open and the
+context to be sure. File **a GitHub issue on this repo** only when the call isn't yours to
+make: you can't pin the cause down, two defensible fixes exist, or it's too large to ride on
+the work in hand. An open issue is a report, not a queue — implement one when you're asked
+to or when it's labelled `Approved`, then close it with `Closes #<n>`.
+
 Don't record work in the repo instead: no `TODO.md`, no `NOTES.md`, no `PLAN.md`. What you
 verified, tried, and decided belongs in the commit message and the PR body.
 
 ## This repo
 
 - **This is a variant package.** The Makefile overrides `TARGETS`/`ARCHES` with `<variant>-<arch>` leaf rules that recurse into `s9pk.mk` with `VARIANT` set, producing `ollama_<variant>_<arch>.s9pk`; `VARIANT` (default `generic`) selects the image config in `startos/manifest/index.ts`. Adding a variant means touching both — a manifest entry alone builds nothing.
-- **The AMD GPU match must stay a positive allowlist.** StartOS's regex engine has no lookahead, so an iGPU exclusion cannot be expressed; the pattern names discrete families instead. Widening it to plain `Radeon` would put `rocm` on Ryzen APU graphics, where ROCm is unreliable.
-- **`CUDA_CACHE_PATH` must point inside the `main` volume.** It exists for Blackwell (sm_121), which only the PTX-only `cuda_v13` runner serves, so the whole backend JIT-compiles on first load; the container's default cache is ephemeral and the compile would repeat every start.
-- **`nvidiaContainer: true` only takes effect on the `-nvidia` platform flavors.** Elsewhere there is no host NVIDIA runtime and Ollama falls back to CPU without erroring, so a report of "GPU not used" is not necessarily a package bug.
+- **Keep the AMD GPU match a positive allowlist of discrete families.** StartOS's regex engine has no lookahead, and widening it to plain `Radeon` would put `rocm` on Ryzen APU graphics, where ROCm is unreliable.
+- **Keep `CUDA_CACHE_PATH` inside the `main` volume**, or Blackwell's whole-backend JIT compile repeats on every start.
+- **Don't rename `port` or `apiHostId` in `startos/utils.ts`.** `open-webui-startos` imports both through its `ollama-startos#next` dependency.
