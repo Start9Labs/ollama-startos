@@ -10,11 +10,13 @@ const imageConfigs = {
   generic: {
     source: { dockerTag: 'ollama/ollama:0.35.0' },
     arch: ['aarch64', 'x86_64'],
+    emulateMissing: false,
     nvidiaContainer: true,
   },
   rocm: {
     source: { dockerTag: 'ollama/ollama:0.35.0-rocm' },
     arch: ['x86_64'],
+    emulateMissing: false,
     nvidiaContainer: false,
   },
 } as const
@@ -61,5 +63,4 @@ export const manifest = setupManifest({
   hardwareRequirements: {
     device: [...(hwDevices[variant as keyof typeof hwDevices] ?? [])],
   },
-  dependencies: {},
 })
