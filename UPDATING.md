@@ -34,4 +34,4 @@ Ollama ships as a prebuilt upstream Docker image; no source build or submodule i
 - **`startos/manifest/index.ts`** — update both `dockerTag` values in `imageConfigs`:
   - `generic.source.dockerTag` → `ollama/ollama:<new version>`
   - `rocm.source.dockerTag` → `ollama/ollama:<new version>-rocm`
-- **`startos/versions/current.ts`** — edit in place: set `version` to `'<new version>:0'` and update `releaseNotes` (all locales) to reflect the bump. Leave `index.ts` and the `current` export untouched. Only spin off a historical version file when the bump carries an `up`/`down` migration.
+- **`startos/versions/current.ts`** — set `version` to `'<new version>:0'` and update `releaseNotes` (all locales) to reflect the bump. If the outgoing version has an empty `up` migration, edit in place and leave `index.ts` untouched. Otherwise spin off the outgoing version into a historical file and add it to `index.ts`, keeping its migration with the version that introduced it. The latest version always exports `current`.
