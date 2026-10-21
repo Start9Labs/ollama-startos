@@ -1,48 +1,48 @@
 import { VersionInfo, IMPOSSIBLE } from '@start9labs/start-sdk'
 
 export const current = VersionInfo.of({
-  version: '0.40.3:0',
+  version: '0.40.8:0',
   releaseNotes: {
-    en_US: `Updated Ollama to 0.40.3.
+    en_US: `Updated Ollama to 0.40.8.
 
-- Adds Clef and Clef Flash decision models with image input through /v1/systemone, and explicit CAPABILITY declarations in Modelfiles.
-- Fixes OpenAI-compatible tool results containing multiple content parts and images, and updates the llama.cpp engine.
-- Pauses background upgrades of older local models to avoid slowing down embeddings and other requests.
-- Updates start-sdk to 3.0.6, including a fix for duplicate daemons after restarting during startup.
+- Stops trusting certificates from a compromised certificate authority (eMudhra) when pulling models.
+- Supports multimodal embeddings, and more draft models for speculative decoding.
+- Fixes continuing OpenAI-compatible Responses conversations that include custom tool calls or switch between models.
+- Updates the llama.cpp engine, adding Nemotron 3.5 support.
 
-Full upstream changes: https://github.com/ollama/ollama/compare/v0.35.0...v0.40.3`,
-    es_ES: `Ollama se actualizó a la versión 0.40.3.
+Full upstream changes: https://github.com/ollama/ollama/compare/v0.40.3...v0.40.8`,
+    es_ES: `Ollama se actualizó a la versión 0.40.8.
 
-- Añade los modelos de decisión Clef y Clef Flash con entrada de imágenes mediante /v1/systemone y declaraciones CAPABILITY explícitas en Modelfiles.
-- Corrige los resultados de herramientas compatibles con OpenAI que contienen varias partes de contenido e imágenes y actualiza el motor llama.cpp.
-- Pausa las actualizaciones en segundo plano de los modelos locales antiguos para evitar ralentizar los embeddings y otras solicitudes.
-- Actualiza start-sdk a 3.0.6, incluida una corrección de los demonios duplicados tras reiniciar durante el arranque.
+- Deja de confiar en los certificados de una autoridad de certificación comprometida (eMudhra) al descargar modelos.
+- Admite embeddings multimodales y más modelos borrador para la decodificación especulativa.
+- Corrige la continuación de conversaciones de Responses compatibles con OpenAI que incluyen llamadas a herramientas personalizadas o cambian de modelo.
+- Actualiza el motor llama.cpp, con compatibilidad con Nemotron 3.5.
 
-Todos los cambios del proyecto original: https://github.com/ollama/ollama/compare/v0.35.0...v0.40.3`,
-    de_DE: `Ollama wurde auf Version 0.40.3 aktualisiert.
+Todos los cambios del proyecto original: https://github.com/ollama/ollama/compare/v0.40.3...v0.40.8`,
+    de_DE: `Ollama wurde auf Version 0.40.8 aktualisiert.
 
-- Ergänzt die Entscheidungsmodelle Clef und Clef Flash mit Bildeingabe über /v1/systemone sowie explizite CAPABILITY-Deklarationen in Modelfiles.
-- Behebt OpenAI-kompatible Werkzeugergebnisse mit mehreren Inhaltsteilen und Bildern und aktualisiert die llama.cpp-Engine.
-- Pausiert Hintergrund-Upgrades älterer lokaler Modelle, um Embeddings und andere Anfragen nicht zu verlangsamen.
-- Aktualisiert start-sdk auf 3.0.6, einschließlich einer Korrektur für doppelte Daemons nach einem Neustart während des Starts.
+- Vertraut beim Herunterladen von Modellen keinen Zertifikaten einer kompromittierten Zertifizierungsstelle (eMudhra) mehr.
+- Unterstützt multimodale Embeddings und weitere Draft-Modelle für spekulatives Dekodieren.
+- Behebt das Fortsetzen OpenAI-kompatibler Responses-Unterhaltungen, die eigene Werkzeugaufrufe enthalten oder zwischen Modellen wechseln.
+- Aktualisiert die llama.cpp-Engine und ergänzt Unterstützung für Nemotron 3.5.
 
-Alle Upstream-Änderungen: https://github.com/ollama/ollama/compare/v0.35.0...v0.40.3`,
-    pl_PL: `Ollama została zaktualizowana do wersji 0.40.3.
+Alle Upstream-Änderungen: https://github.com/ollama/ollama/compare/v0.40.3...v0.40.8`,
+    pl_PL: `Ollama została zaktualizowana do wersji 0.40.8.
 
-- Dodaje modele decyzyjne Clef i Clef Flash z obsługą obrazów przez /v1/systemone oraz jawne deklaracje CAPABILITY w plikach Modelfile.
-- Naprawia zgodne z OpenAI wyniki narzędzi zawierające wiele części treści i obrazy oraz aktualizuje silnik llama.cpp.
-- Wstrzymuje aktualizacje starszych modeli lokalnych w tle, aby nie spowalniać osadzeń i innych żądań.
-- Aktualizuje start-sdk do 3.0.6, w tym naprawia duplikowanie demonów po ponownym uruchomieniu podczas rozruchu.
+- Podczas pobierania modeli przestaje ufać certyfikatom skompromitowanego urzędu certyfikacji (eMudhra).
+- Obsługuje osadzenia multimodalne i więcej modeli szkicowych do dekodowania spekulatywnego.
+- Naprawia kontynuowanie zgodnych z OpenAI rozmów Responses, które zawierają własne wywołania narzędzi lub przełączają się między modelami.
+- Aktualizuje silnik llama.cpp, dodając obsługę Nemotron 3.5.
 
-Wszystkie zmiany projektu źródłowego: https://github.com/ollama/ollama/compare/v0.35.0...v0.40.3`,
-    fr_FR: `Ollama a été mis à jour vers la version 0.40.3.
+Wszystkie zmiany projektu źródłowego: https://github.com/ollama/ollama/compare/v0.40.3...v0.40.8`,
+    fr_FR: `Ollama a été mis à jour vers la version 0.40.8.
 
-- Ajoute les modèles de décision Clef et Clef Flash avec entrée d'images via /v1/systemone et les déclarations CAPABILITY explicites dans les Modelfiles.
-- Corrige les résultats d'outils compatibles OpenAI contenant plusieurs parties de contenu et des images, et met à jour le moteur llama.cpp.
-- Suspend les mises à niveau en arrière-plan des anciens modèles locaux pour éviter de ralentir les embeddings et les autres requêtes.
-- Met à jour start-sdk vers 3.0.6, avec un correctif pour les démons dupliqués après un redémarrage pendant le démarrage.
+- Ne fait plus confiance, lors du téléchargement des modèles, aux certificats d'une autorité de certification compromise (eMudhra).
+- Prend en charge les embeddings multimodaux et davantage de modèles de brouillon pour le décodage spéculatif.
+- Corrige la poursuite des conversations Responses compatibles OpenAI qui comportent des appels d'outils personnalisés ou changent de modèle.
+- Met à jour le moteur llama.cpp, avec la prise en charge de Nemotron 3.5.
 
-Tous les changements en amont : https://github.com/ollama/ollama/compare/v0.35.0...v0.40.3`,
+Tous les changements en amont : https://github.com/ollama/ollama/compare/v0.40.3...v0.40.8`,
   },
   migrations: {
     up: async ({ effects }) => {},
