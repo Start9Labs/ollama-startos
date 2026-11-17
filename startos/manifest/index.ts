@@ -8,13 +8,13 @@ const mutable = <T>(value: T): Mutable<T> => value as Mutable<T>
 
 const imageConfigs = {
   generic: {
-    source: { dockerTag: 'ollama/ollama:0.40.14' },
+    source: { dockerTag: 'ollama/ollama:0.40.16' },
     arch: ['aarch64', 'x86_64'],
     emulateMissing: false,
     nvidiaContainer: true,
   },
   rocm: {
-    source: { dockerTag: 'ollama/ollama:0.40.14-rocm' },
+    source: { dockerTag: 'ollama/ollama:0.40.16-rocm' },
     arch: ['x86_64'],
     emulateMissing: false,
     nvidiaContainer: false,
