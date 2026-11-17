@@ -1,48 +1,48 @@
 import { VersionInfo, IMPOSSIBLE } from '@start9labs/start-sdk'
 
 export const current = VersionInfo.of({
-  version: '0.40.14:0',
+  version: '0.40.16:0',
   releaseNotes: {
-    en_US: `Updated Ollama to 0.40.14.
+    en_US: `Updated Ollama to 0.40.16.
 
-- Adds Linux support for Flint and LFM3 models, and support for Nemotron 3.5 Bolt E4B and d3 decision models.
-- OpenAI-compatible endpoints respect model sampling defaults, preserve prior response content, and report streaming generation failures.
-- Fixes compressed cloud web search responses and tool-only assistant turns from Kimi CLI.
-- Requires StartOS 0.4.1 or later.
+- Adds support for MiMo V2.6 and Ripple Preview models.
+- Recurrent and vision GGUF models can serve more than one request at a time, and Qwen3 and Qwen3.5 models with long-context scaling are supported.
+- The OpenAI-compatible \`/v1/responses\` endpoint respects \`truncation\` and no longer truncates silently by default; \`/v1/models\` returns an empty list when no models are installed.
+- Requires StartOS 0.4.2 or later.
 
-Full upstream changes: https://github.com/ollama/ollama/compare/v0.40.8...v0.40.14`,
-    es_ES: `Ollama se actualizó a la versión 0.40.14.
+Full upstream changes: https://github.com/ollama/ollama/compare/v0.40.14...v0.40.16`,
+    es_ES: `Ollama se actualizó a la versión 0.40.16.
 
-- Añade compatibilidad con Linux para los modelos Flint y LFM3, y compatibilidad con Nemotron 3.5 Bolt E4B y los modelos de decisión d3.
-- Los endpoints compatibles con OpenAI respetan los valores de muestreo del modelo, conservan el contenido de respuestas anteriores e informan de los fallos de generación en streaming.
-- Corrige las respuestas comprimidas de búsqueda web en la nube y los turnos del asistente de Kimi CLI que solo contienen llamadas a herramientas.
-- Requiere StartOS 0.4.1 o posterior.
+- Añade compatibilidad con los modelos MiMo V2.6 y Ripple Preview.
+- Los modelos GGUF recurrentes y de visión pueden atender más de una solicitud a la vez, y se admiten los modelos Qwen3 y Qwen3.5 con escalado de contexto largo.
+- El endpoint compatible con OpenAI \`/v1/responses\` respeta \`truncation\` y ya no trunca en silencio de forma predeterminada; \`/v1/models\` devuelve una lista vacía cuando no hay modelos instalados.
+- Requiere StartOS 0.4.2 o posterior.
 
-Todos los cambios del proyecto original: https://github.com/ollama/ollama/compare/v0.40.8...v0.40.14`,
-    de_DE: `Ollama wurde auf Version 0.40.14 aktualisiert.
+Todos los cambios del proyecto original: https://github.com/ollama/ollama/compare/v0.40.14...v0.40.16`,
+    de_DE: `Ollama wurde auf Version 0.40.16 aktualisiert.
 
-- Ergänzt Linux-Unterstützung für Flint- und LFM3-Modelle sowie Unterstützung für Nemotron 3.5 Bolt E4B und d3-Entscheidungsmodelle.
-- OpenAI-kompatible Endpunkte beachten die Sampling-Vorgaben des Modells, bewahren Inhalte vorheriger Antworten und melden Fehler bei der Streaming-Generierung.
-- Behebt komprimierte Antworten der Cloud-Websuche und reine Werkzeugaufruf-Antworten von Kimi CLI.
-- Benötigt StartOS 0.4.1 oder neuer.
+- Ergänzt Unterstützung für die Modelle MiMo V2.6 und Ripple Preview.
+- Rekurrente und Vision-GGUF-Modelle können mehrere Anfragen gleichzeitig bedienen, und Qwen3- sowie Qwen3.5-Modelle mit Langkontext-Skalierung werden unterstützt.
+- Der OpenAI-kompatible Endpunkt \`/v1/responses\` beachtet \`truncation\` und kürzt standardmäßig nicht mehr stillschweigend; \`/v1/models\` liefert eine leere Liste, wenn keine Modelle installiert sind.
+- Benötigt StartOS 0.4.2 oder neuer.
 
-Alle Upstream-Änderungen: https://github.com/ollama/ollama/compare/v0.40.8...v0.40.14`,
-    pl_PL: `Ollama została zaktualizowana do wersji 0.40.14.
+Alle Upstream-Änderungen: https://github.com/ollama/ollama/compare/v0.40.14...v0.40.16`,
+    pl_PL: `Ollama została zaktualizowana do wersji 0.40.16.
 
-- Dodaje obsługę modeli Flint i LFM3 w systemie Linux oraz modeli Nemotron 3.5 Bolt E4B i modeli decyzyjnych d3.
-- Endpointy zgodne z OpenAI respektują domyślne ustawienia próbkowania modelu, zachowują treść wcześniejszych odpowiedzi i zgłaszają błędy generowania strumieniowego.
-- Naprawia skompresowane odpowiedzi wyszukiwania internetowego w chmurze oraz tury asystenta Kimi CLI zawierające wyłącznie wywołania narzędzi.
-- Wymaga StartOS 0.4.1 lub nowszego.
+- Dodaje obsługę modeli MiMo V2.6 i Ripple Preview.
+- Rekurencyjne i wizyjne modele GGUF mogą obsługiwać wiele żądań jednocześnie, a modele Qwen3 i Qwen3.5 ze skalowaniem długiego kontekstu są obsługiwane.
+- Endpoint zgodny z OpenAI \`/v1/responses\` respektuje \`truncation\` i domyślnie nie przycina już po cichu; \`/v1/models\` zwraca pustą listę, gdy nie zainstalowano żadnych modeli.
+- Wymaga StartOS 0.4.2 lub nowszego.
 
-Wszystkie zmiany projektu źródłowego: https://github.com/ollama/ollama/compare/v0.40.8...v0.40.14`,
-    fr_FR: `Ollama a été mis à jour vers la version 0.40.14.
+Wszystkie zmiany projektu źródłowego: https://github.com/ollama/ollama/compare/v0.40.14...v0.40.16`,
+    fr_FR: `Ollama a été mis à jour vers la version 0.40.16.
 
-- Ajoute la prise en charge de Flint et LFM3 sous Linux, ainsi que de Nemotron 3.5 Bolt E4B et des modèles de décision d3.
-- Les points d'accès compatibles OpenAI respectent les paramètres d'échantillonnage du modèle, préservent le contenu des réponses précédentes et signalent les échecs de génération en streaming.
-- Corrige les réponses compressées de recherche web dans le cloud et les tours de l'assistant Kimi CLI contenant uniquement des appels d'outils.
-- Nécessite StartOS 0.4.1 ou ultérieur.
+- Ajoute la prise en charge des modèles MiMo V2.6 et Ripple Preview.
+- Les modèles GGUF récurrents et de vision peuvent traiter plusieurs requêtes à la fois, et les modèles Qwen3 et Qwen3.5 avec mise à l'échelle du contexte long sont pris en charge.
+- Le point d'accès compatible OpenAI \`/v1/responses\` respecte \`truncation\` et ne tronque plus silencieusement par défaut ; \`/v1/models\` renvoie une liste vide lorsqu'aucun modèle n'est installé.
+- Nécessite StartOS 0.4.2 ou ultérieur.
 
-Tous les changements en amont : https://github.com/ollama/ollama/compare/v0.40.8...v0.40.14`,
+Tous les changements en amont : https://github.com/ollama/ollama/compare/v0.40.14...v0.40.16`,
   },
   migrations: {
     up: async ({ effects }) => {},
